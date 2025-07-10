@@ -1,3 +1,5 @@
+let goodnightMode = false;
+
 const chatForm = document.getElementById("chat-form");
 const userInput = document.getElementById("user-input");
 const chatBox = document.getElementById("chat-box");
@@ -18,11 +20,44 @@ function appendMessage(sender, text) {
   msgDiv.textContent = text;
   chatBox.appendChild(msgDiv);
   chatBox.scrollTop = chatBox.scrollHeight;
+  const chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || [];
+  chatHistory.push({ sender, text });
+  localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
 }
 
-function sayGoodnight() {
-  appendMessage("bot", "Goodnight 🌸 Sweet dreams. I'm here whenever you need me.");
-  document.body.style.backgroundColor = "#fce4ec"; // soft pink
+function loadChatHistory() {
+  const chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || [];
+  chatHistory.forEach(msg => appendMessage(msg.sender, msg.text));
+}
+
+function toggleGoodnightMode() {
+  const btn = document.getElementById("goodnight-toggle");
+  const body = document.body;
+
+  goodnightMode = !goodnightMode;
+
+  if (goodnightMode) {
+    // Enter cyber night mode
+    body.classList.add("cyber-night");
+    appendMessage("bot", "🌙 Goodnight!");
+    btn.textContent = "⭐ Rise and Shine";
+    
+    // Add some cyber night ambiance
+    setTimeout(() => {
+      appendMessage("bot", "Wishing you wonderful dreams ☺️ I'm here whenever you need me <3");
+    }, 2000);
+    
+  } else {
+    // Exit cyber night mode
+    body.classList.remove("cyber-night");
+    appendMessage("bot", "☀️ Good morning!");
+    btn.textContent = "🌙 Goodnight Mode";
+    
+    // Add morning message
+    setTimeout(() => {
+      appendMessage("bot", "Welcome back to the  daylight world ☺️ Wishing you a wonderful day <3");
+    }, 1500);
+  }
 }
 
 async function getBotResponse(message) {
@@ -37,3 +72,7 @@ async function getBotResponse(message) {
   const data = await response.json();
   return data.reply;
 }
+
+window.onload = () => {
+  loadChatHistory();
+};

@@ -3,70 +3,164 @@ body {
     font-family: 'Quicksand', sans-serif;
     background-color: #fffafc;
     color: #5a4e4e;
-  }
-  
-  .app-container {
+    transition: all 0.5s ease;
+}
+
+/* Cyber Night Mode Styles */
+body.cyber-night {
+    background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+    color: #e8e8e8;
+    position: relative;
+    overflow-x: hidden;
+}
+
+body.cyber-night::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(255, 182, 193, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 105, 180, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(255, 20, 147, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.app-container {
     max-width: 600px;
     margin: auto;
     padding: 2rem;
     border-radius: 20px;
     background: #fff0f6;
     box-shadow: 0 0 10px rgba(255, 192, 203, 0.3);
-  }
-  
-  header {
+    transition: all 0.5s ease;
+}
+
+body.cyber-night .app-container {
+    background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
+    box-shadow: 
+        0 0 20px rgba(255, 182, 193, 0.3),
+        0 0 40px rgba(255, 105, 180, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 182, 193, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+header {
     text-align: center;
     margin-bottom: 2rem;
-  }
-  
-  header h1 {
+}
+
+header h1 {
     font-size: 2.5rem;
     color: #d979a2;
-  }
-  
-  .chat-container {
+    transition: all 0.5s ease;
+}
+
+body.cyber-night header h1 {
+    color: #ff69b4;
+    text-shadow: 
+        0 0 10px rgba(255, 105, 180, 0.5),
+        0 0 20px rgba(255, 105, 180, 0.3),
+        0 0 30px rgba(255, 105, 180, 0.1);
+    animation: neonGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes neonGlow {
+    from { text-shadow: 0 0 10px rgba(255, 105, 180, 0.5), 0 0 20px rgba(255, 105, 180, 0.3), 0 0 30px rgba(255, 105, 180, 0.1); }
+    to { text-shadow: 0 0 15px rgba(255, 105, 180, 0.7), 0 0 25px rgba(255, 105, 180, 0.5), 0 0 35px rgba(255, 105, 180, 0.3); }
+}
+
+body.cyber-night header p {
+    color: #ffb6c1;
+    text-shadow: 0 0 5px rgba(255, 182, 193, 0.5);
+}
+
+.chat-container {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-  }
-  
-  .chat-box {
+}
+
+.chat-box {
     height: 300px;
     overflow-y: auto;
     background: #fff8fc;
     padding: 1rem;
     border-radius: 10px;
     border: 1px solid #fdd2e0;
-  }
-  
-  .chat-message {
+    transition: all 0.5s ease;
+}
+
+body.cyber-night .chat-box {
+    background: linear-gradient(145deg, #0f0f23 0%, #1a1a2e 100%);
+    border: 1px solid rgba(255, 182, 193, 0.4);
+    box-shadow: 
+        inset 0 2px 4px rgba(0, 0, 0, 0.3),
+        0 0 10px rgba(255, 182, 193, 0.2);
+}
+
+.chat-message {
     margin-bottom: 0.8rem;
-  }
-  
-  .chat-message.user {
+    transition: all 0.3s ease;
+}
+
+.chat-message.user {
     text-align: right;
     color: #d1739c;
-  }
-  
-  .chat-message.bot {
+}
+
+body.cyber-night .chat-message.user {
+    color: #ff69b4;
+    text-shadow: 0 0 5px rgba(255, 105, 180, 0.3);
+}
+
+.chat-message.bot {
     text-align: left;
     color: #745b6b;
-  }
-  
-  form {
+}
+
+body.cyber-night .chat-message.bot {
+    color: #ffb6c1;
+    text-shadow: 0 0 3px rgba(255, 182, 193, 0.3);
+}
+
+form {
     display: flex;
     gap: 0.5rem;
-  }
-  
-  input[type="text"] {
+    flex-wrap: wrap;
+}
+
+input[type="text"] {
     flex: 1;
     padding: 0.8rem;
     border-radius: 10px;
     border: 1px solid #fcbdd8;
     font-size: 1rem;
-  }
-  
-  button {
+    transition: all 0.3s ease;
+}
+
+body.cyber-night input[type="text"] {
+    background: rgba(26, 26, 46, 0.8);
+    border: 1px solid rgba(255, 182, 193, 0.5);
+    color: #ffb6c1;
+    box-shadow: 0 0 10px rgba(255, 182, 193, 0.2);
+}
+
+body.cyber-night input[type="text"]::placeholder {
+    color: rgba(255, 182, 193, 0.6);
+}
+
+body.cyber-night input[type="text"]:focus {
+    outline: none;
+    border-color: #ff69b4;
+    box-shadow: 0 0 15px rgba(255, 105, 180, 0.4);
+}
+
+button {
     padding: 0.8rem 1rem;
     background: #f89ab7;
     color: white;
@@ -74,9 +168,21 @@ body {
     border-radius: 10px;
     font-weight: bold;
     cursor: pointer;
-  }
+    transition: all 0.3s ease;
+}
 
-  .goodnight-btn {
+body.cyber-night button {
+    background: linear-gradient(145deg, #ff69b4 0%, #ff1493 100%);
+    box-shadow: 0 0 10px rgba(255, 105, 180, 0.3);
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+}
+
+body.cyber-night button:hover {
+    box-shadow: 0 0 15px rgba(255, 105, 180, 0.5);
+    transform: translateY(-2px);
+}
+
+.goodnight-btn {
     margin-top: 0.5rem;
     padding: 0.7rem 1rem;
     background: #eac4d5;
@@ -85,17 +191,97 @@ body {
     font-size: 1rem;
     color: #5a4e4e;
     cursor: pointer;
-  }  
-  
-  .nav-buttons {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+body.cyber-night .goodnight-btn {
+    background: linear-gradient(145deg, #ff69b4 0%, #ff1493 100%);
+    color: white;
+    box-shadow: 
+        0 0 15px rgba(255, 105, 180, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+}
+
+body.cyber-night .goodnight-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+body.cyber-night .goodnight-btn:hover::before {
+    left: 100%;
+}
+
+body.cyber-night .goodnight-btn:hover {
+    box-shadow: 0 0 20px rgba(255, 105, 180, 0.6);
+    transform: translateY(-2px);
+}
+
+.nav-buttons {
     text-align: center;
     margin-top: 2rem;
-  }
-  
-  .nav-buttons a {
+}
+
+.nav-buttons a {
     margin: 0 1rem;
     text-decoration: none;
     color: #e48bae;
     font-weight: bold;
-  }
+    transition: all 0.3s ease;
+}
+
+body.cyber-night .nav-buttons a {
+    color: #ffb6c1;
+    text-shadow: 0 0 5px rgba(255, 182, 193, 0.3);
+}
+
+body.cyber-night .nav-buttons a:hover {
+    color: #ff69b4;
+    text-shadow: 0 0 8px rgba(255, 105, 180, 0.5);
+}
+
+/* Floating stars animation for cyber night mode */
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+body.cyber-night::after {
+    content: '⭐ 🌸 ✨';
+    position: fixed;
+    top: 10%;
+    right: 5%;
+    font-size: 2rem;
+    animation: float 6s ease-in-out infinite;
+    z-index: -1;
+    opacity: 0.3;
+}
+
+/* Scrollbar styling for cyber night mode */
+body.cyber-night .chat-box::-webkit-scrollbar {
+    width: 8px;
+}
+
+body.cyber-night .chat-box::-webkit-scrollbar-track {
+    background: rgba(26, 26, 46, 0.5);
+    border-radius: 4px;
+}
+
+body.cyber-night .chat-box::-webkit-scrollbar-thumb {
+    background: linear-gradient(145deg, #ff69b4 0%, #ff1493 100%);
+    border-radius: 4px;
+    box-shadow: 0 0 5px rgba(255, 105, 180, 0.3);
+}
+
+body.cyber-night .chat-box::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(145deg, #ff1493 0%, #ff69b4 100%);
+}   
   
