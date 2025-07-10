@@ -2,29 +2,196 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Journal - PoppyNest</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="app-container">
-    <h1>📝 Journal</h1>
-    <textarea id="journal-entry" placeholder="How was your day?" rows="10"></textarea>
-    <button onclick="saveJournal()">Save Entry</button>
-    <p id="saved-msg"></p>
-    <a href="index.html">← Back to Chat</a>
+    <header>
+      <h1>📝 Journal</h1>
+      <p>Write about your day</p>
+    </header>
+
+    <main class="journal-container">
+      <button class="new-page-btn" onclick="addNewPage()">📄 New Entry</button>
+      
+      <div id="journal-pages" class="journal-pages">
+        <!-- Journal pages will be dynamically added here -->
+      </div>
+      
+      <div class="button-group">
+        <button id="goodnight-toggle" class="goodnight-btn" onclick="toggleGoodnightMode()">🌙 Goodnight Mode</button>
+      </div>
+    </main>
+
+    <nav class="nav-buttons">
+      <a href="index.html">← Back to Chat</a>
+      <a href="dreams.html">💤 Dream Log</a>
+    </nav>
   </div>
 
   <script>
-    function saveJournal() {
-      const text = document.getElementById("journal-entry").value;
-      localStorage.setItem("journal", text);
-      document.getElementById("saved-msg").textContent = "✅ Saved!";
+    let goodnightMode = false;
+    let journalPages = [];
+
+    function addNewPage() {
+      const newPage = {
+        id: Date.now(),
+        date: new Date().toLocaleDateString(),
+        content: '',
+        isEditing: true
+      };
+      
+      journalPages.unshift(newPage);
+      saveJournalPages();
+      renderJournalPages();
+      
+      // Focus on the new page's textarea
+      setTimeout(() => {
+        const newTextarea = document.querySelector(`[data-page-id="${newPage.id}"] textarea`);
+        if (newTextarea) newTextarea.focus();
+      }, 100);
+    }
+
+    function editPage(pageId) {
+      const page = journalPages.find(p => p.id === pageId);
+      if (page) {
+        page.isEditing = true;
+        renderJournalPages();
+        
+        setTimeout(() => {
+          const textarea = document.querySelector(`[data-page-id="${pageId}"] textarea`);
+          if (textarea) textarea.focus();
+        }, 100);
+      }
+    }
+
+    function savePage(pageId) {
+      const page = journalPages.find(p => p.id === pageId);
+      const textarea = document.querySelector(`[data-page-id="${pageId}"] textarea`);
+      
+      if (page && textarea) {
+        page.content = textarea.value;
+        page.isEditing = false;
+        saveJournalPages();
+        renderJournalPages();
+      }
+    }
+
+    function deletePage(pageId) {
+      if (confirm('Are you sure you want to delete this entry?')) {
+        journalPages = journalPages.filter(p => p.id !== pageId);
+        saveJournalPages();
+        renderJournalPages();
+      }
+    }
+
+    function renderJournalPages() {
+      const container = document.getElementById('journal-pages');
+      container.innerHTML = '';
+      
+      if (journalPages.length === 0) {
+        container.innerHTML = '<div class="journal-empty">No entries yet. Click "New Entry" to start writing! 📝</div>';
+        return;
+      }
+      
+      journalPages.forEach(page => {
+        const pageElement = document.createElement('div');
+        pageElement.className = 'journal-page';
+        pageElement.setAttribute('data-page-id', page.id);
+        
+        if (page.isEditing) {
+          pageElement.innerHTML = `
+            <div class="journal-page-header">
+              <span class="journal-page-date">${page.date}</span>
+              <span>✏️ Editing</span>
+            </div>
+            <textarea 
+              placeholder="Write your thoughts here..." 
+              style="width: 100%; min-height: 150px; margin: 0;"
+            >${page.content}</textarea>
+            <div class="journal-page-actions">
+              <button onclick="savePage(${page.id})">💾 Save</button>
+              <button onclick="deletePage(${page.id})" style="background: #ff6b6b;">🗑️ Delete</button>
+            </div>
+          `;
+        } else {
+          pageElement.innerHTML = `
+            <div class="journal-page-header">
+              <span class="journal-page-date">${page.date}</span>
+              <span>📖 Entry</span>
+            </div>
+            <div class="journal-page-content">${page.content || 'No content yet...'}</div>
+            <div class="journal-page-actions">
+              <button onclick="editPage(${page.id})">✏️ Edit</button>
+              <button onclick="deletePage(${page.id})" style="background: #ff6b6b;">🗑️ Delete</button>
+            </div>
+          `;
+        }
+        
+        container.appendChild(pageElement);
+      });
+    }
+
+    function saveJournalPages() {
+      localStorage.setItem("journalPages", JSON.stringify(journalPages));
+    }
+
+    function loadJournalPages() {
+      const saved = localStorage.getItem("journalPages");
+      if (saved) {
+        journalPages = JSON.parse(saved);
+      }
+    }
+
+    function toggleGoodnightMode() {
+      const btn = document.getElementById("goodnight-toggle");
+      const body = document.body;
+
+      goodnightMode = !goodnightMode;
+
+      if (goodnightMode) {
+        body.classList.add("cyber-night");
+        localStorage.setItem("goodnightMode", "true");
+        btn.textContent = "⭐ Rise and Shine";
+      } else {
+        body.classList.remove("cyber-night");
+        localStorage.setItem("goodnightMode", "false");
+        btn.textContent = "🌙 Goodnight Mode";
+      }
     }
 
     window.onload = () => {
-      const saved = localStorage.getItem("journal");
-      if (saved) document.getElementById("journal-entry").value = saved;
+      loadJournalPages();
+      renderJournalPages();
+      
+      // Check if we should be in goodnight mode
+      const savedMode = localStorage.getItem("goodnightMode");
+      if (savedMode === "true") {
+        goodnightMode = true;
+        document.body.classList.add("cyber-night");
+        const btn = document.getElementById("goodnight-toggle");
+        if (btn) btn.textContent = "⭐ Rise and Shine";
+      }
+      
+      // Store current mode for next page load
+      localStorage.setItem("previousMode", savedMode || "false");
     };
+
+    // Auto-save all editing pages on unload
+    window.addEventListener('beforeunload', () => {
+      // For each editing page, update its content from the textarea
+      journalPages.forEach(page => {
+        if (page.isEditing) {
+          const textarea = document.querySelector(`[data-page-id="${page.id}"] textarea`);
+          if (textarea) {
+            page.content = textarea.value;
+          }
+        }
+      });
+      saveJournalPages();
+    });
   </script>
 </body>
 </html>

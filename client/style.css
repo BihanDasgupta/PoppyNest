@@ -103,29 +103,86 @@ body.cyber-night .chat-box {
         0 0 10px rgba(255, 182, 193, 0.2);
 }
 
+/* iOS Style Chat Messages */
 .chat-message {
-    margin-bottom: 0.8rem;
+    margin-bottom: 1rem;
     transition: all 0.3s ease;
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
 }
 
 .chat-message.user {
-    text-align: right;
-    color: #d1739c;
-}
-
-body.cyber-night .chat-message.user {
-    color: #ff69b4;
-    text-shadow: 0 0 5px rgba(255, 105, 180, 0.3);
+    justify-content: flex-end;
+    flex-direction: row-reverse;
 }
 
 .chat-message.bot {
-    text-align: left;
-    color: #745b6b;
+    justify-content: flex-start;
 }
 
-body.cyber-night .chat-message.bot {
+.chat-message .message-bubble {
+    max-width: 70%;
+    padding: 0.8rem 1rem;
+    border-radius: 18px;
+    position: relative;
+    word-wrap: break-word;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* User message bubble (right side) */
+.chat-message.user .message-bubble {
+    background: linear-gradient(135deg, #f89ab7 0%, #e48bae 100%);
+    color: white;
+    border-bottom-right-radius: 4px;
+    margin-left: auto;
+}
+
+body.cyber-night .chat-message.user .message-bubble {
+    background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+    box-shadow: 
+        0 2px 8px rgba(255, 105, 180, 0.3),
+        0 0 15px rgba(255, 105, 180, 0.2);
+    text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+/* Bot message bubble (left side) */
+.chat-message.bot .message-bubble {
+    background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
+    color: #5a4e4e;
+    border-bottom-left-radius: 4px;
+    border: 1px solid #fdd2e0;
+}
+
+body.cyber-night .chat-message.bot .message-bubble {
+    background: linear-gradient(135deg, #2a1a2e 0%, #1a1a2e 100%);
     color: #ffb6c1;
+    border: 1px solid rgba(255, 182, 193, 0.4);
+    box-shadow: 
+        0 2px 8px rgba(255, 182, 193, 0.2),
+        0 0 10px rgba(255, 182, 193, 0.1);
     text-shadow: 0 0 3px rgba(255, 182, 193, 0.3);
+}
+
+/* Message timestamp */
+.chat-message .timestamp {
+    font-size: 0.7rem;
+    opacity: 0.7;
+    margin-top: 0.2rem;
+}
+
+.chat-message.user .timestamp {
+    text-align: right;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.chat-message.bot .timestamp {
+    text-align: left;
+    color: rgba(90, 78, 78, 0.7);
+}
+
+body.cyber-night .chat-message.bot .timestamp {
+    color: rgba(255, 182, 193, 0.7);
 }
 
 form {
@@ -283,5 +340,204 @@ body.cyber-night .chat-box::-webkit-scrollbar-thumb {
 
 body.cyber-night .chat-box::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(145deg, #ff1493 0%, #ff69b4 100%);
+}
+
+/* Textarea styling for journal and dream pages */
+textarea {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 10px;
+    border: 1px solid #fcbdd8;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1rem;
+    resize: vertical;
+    transition: all 0.3s ease;
+    background: #fff8fc;
+    color: #5a4e4e;
+}
+
+body.cyber-night textarea {
+    background: rgba(26, 26, 46, 0.8);
+    border: 1px solid rgba(255, 182, 193, 0.5);
+    color: #ffb6c1;
+    box-shadow: 0 0 10px rgba(255, 182, 193, 0.2);
+}
+
+body.cyber-night textarea::placeholder {
+    color: rgba(255, 182, 193, 0.6);
+}
+
+body.cyber-night textarea:focus {
+    outline: none;
+    border-color: #ff69b4;
+    box-shadow: 0 0 15px rgba(255, 105, 180, 0.4);
+}
+
+/* Button group styling */
+.button-group {
+    display: flex;
+    gap: 0.5rem;
+    margin: 1rem 0;
+    flex-wrap: wrap;
+}
+
+/* Container styling for journal and dream pages */
+.journal-container,
+.dream-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    align-items: center;
+}
+
+/* Journal page system */
+.journal-pages {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    max-width: 100%;
+}
+
+.journal-page {
+    background: #fff8fc;
+    border: 1px solid #fdd2e0;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(255, 192, 203, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body.cyber-night .journal-page {
+    background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
+    border: 1px solid rgba(255, 182, 193, 0.4);
+    box-shadow: 
+        0 2px 8px rgba(255, 182, 193, 0.2),
+        0 0 15px rgba(255, 182, 193, 0.1);
+}
+
+.journal-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #fdd2e0;
+}
+
+body.cyber-night .journal-page-header {
+    border-bottom: 1px solid rgba(255, 182, 193, 0.4);
+}
+
+.journal-page-date {
+    font-weight: bold;
+    color: #d979a2;
+    font-size: 0.9rem;
+}
+
+body.cyber-night .journal-page-date {
+    color: #ff69b4;
+    text-shadow: 0 0 5px rgba(255, 105, 180, 0.3);
+}
+
+.journal-page-content {
+    min-height: 150px;
+    font-family: 'Quicksand', sans-serif;
+    line-height: 1.6;
+    color: #5a4e4e;
+    white-space: pre-wrap;
+}
+
+body.cyber-night .journal-page-content {
+    color: #ffb6c1;
+}
+
+.journal-page-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    justify-content: flex-end;
+}
+
+.journal-page-actions button {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+}
+
+/* New page button */
+.new-page-btn {
+    background: linear-gradient(135deg, #f89ab7 0%, #e48bae 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0.8rem 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(255, 192, 203, 0.3);
+    align-self: center;
+}
+
+body.cyber-night .new-page-btn {
+    background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+    box-shadow: 0 0 15px rgba(255, 105, 180, 0.3);
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+}
+
+.new-page-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 192, 203, 0.4);
+}
+
+body.cyber-night .new-page-btn:hover {
+    box-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
+}
+
+/* Page turn animation */
+@keyframes pageTurn {
+    0% { transform: rotateY(0deg); opacity: 1; }
+    50% { transform: rotateY(90deg); opacity: 0.5; }
+    100% { transform: rotateY(0deg); opacity: 1; }
+}
+
+.journal-page.turning {
+    animation: pageTurn 0.6s ease-in-out;
+}
+
+/* Empty state */
+.journal-empty {
+    text-align: center;
+    padding: 2rem;
+    color: #d979a2;
+    font-style: italic;
+}
+
+body.cyber-night .journal-empty {
+    color: #ffb6c1;
+    text-shadow: 0 0 5px rgba(255, 182, 193, 0.3);
+}
+
+/* Message styling for save confirmations */
+#saved-msg,
+#dream-msg {
+    text-align: center;
+    font-weight: bold;
+    color: #d979a2;
+    transition: all 0.3s ease;
+}
+
+body.cyber-night #saved-msg,
+body.cyber-night #dream-msg {
+    color: #ff69b4;
+    text-shadow: 0 0 5px rgba(255, 105, 180, 0.3);
 }   
   

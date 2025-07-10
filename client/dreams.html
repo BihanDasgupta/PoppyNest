@@ -2,28 +2,181 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dream Log - PoppyNest</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="app-container">
-    <h1>💤 Dream Log</h1>
-    <textarea id="dream-entry" placeholder="Write down your dreams..." rows="10"></textarea>
-    <button onclick="saveDream()">Save Dream</button>
-    <p id="dream-msg"></p>
-    <a href="index.html">← Back to Chat</a>
+    <header>
+      <h1>💤 Dream Log</h1>
+      <p>Capture your dreams</p>
+    </header>
+
+    <main class="dream-container">
+      <button class="new-page-btn" onclick="addNewDream()">🌙 New Dream</button>
+      
+      <div id="dream-pages" class="journal-pages">
+        <!-- Dream pages will be dynamically added here -->
+      </div>
+      
+      <div class="button-group">
+        <button id="goodnight-toggle" class="goodnight-btn" onclick="toggleGoodnightMode()">🌙 Goodnight Mode</button>
+      </div>
+    </main>
+
+    <nav class="nav-buttons">
+      <a href="index.html">← Back to Chat</a>
+      <a href="journal.html">📝 Journal</a>
+    </nav>
   </div>
 
   <script>
-    function saveDream() {
-      const text = document.getElementById("dream-entry").value;
-      localStorage.setItem("dreams", text);
-      document.getElementById("dream-msg").textContent = "🌙 Dream saved!";
+    let goodnightMode = false;
+    let dreamPages = [];
+
+    function addNewDream() {
+      const newDream = {
+        id: Date.now(),
+        date: new Date().toLocaleDateString(),
+        content: '',
+        isEditing: true
+      };
+      
+      dreamPages.unshift(newDream);
+      saveDreamPages();
+      renderDreamPages();
+      
+      // Focus on the new dream's textarea
+      setTimeout(() => {
+        const newTextarea = document.querySelector(`[data-dream-id="${newDream.id}"] textarea`);
+        if (newTextarea) newTextarea.focus();
+      }, 100);
+    }
+
+    function editDream(dreamId) {
+      const dream = dreamPages.find(d => d.id === dreamId);
+      if (dream) {
+        dream.isEditing = true;
+        renderDreamPages();
+        
+        setTimeout(() => {
+          const textarea = document.querySelector(`[data-dream-id="${dreamId}"] textarea`);
+          if (textarea) textarea.focus();
+        }, 100);
+      }
+    }
+
+    function saveDream(dreamId) {
+      const dream = dreamPages.find(d => d.id === dreamId);
+      const textarea = document.querySelector(`[data-dream-id="${dreamId}"] textarea`);
+      
+      if (dream && textarea) {
+        dream.content = textarea.value;
+        dream.isEditing = false;
+        saveDreamPages();
+        renderDreamPages();
+      }
+    }
+
+    function deleteDream(dreamId) {
+      if (confirm('Are you sure you want to delete this dream?')) {
+        dreamPages = dreamPages.filter(d => d.id !== dreamId);
+        saveDreamPages();
+        renderDreamPages();
+      }
+    }
+
+    function renderDreamPages() {
+      const container = document.getElementById('dream-pages');
+      container.innerHTML = '';
+      
+      if (dreamPages.length === 0) {
+        container.innerHTML = '<div class="journal-empty">No dreams recorded yet. Click "New Dream" to start! 🌙</div>';
+        return;
+      }
+      
+      dreamPages.forEach(dream => {
+        const dreamElement = document.createElement('div');
+        dreamElement.className = 'journal-page';
+        dreamElement.setAttribute('data-dream-id', dream.id);
+        
+        if (dream.isEditing) {
+          dreamElement.innerHTML = `
+            <div class="journal-page-header">
+              <span class="journal-page-date">${dream.date}</span>
+              <span>✏️ Editing Dream</span>
+            </div>
+            <textarea 
+              placeholder="Describe your dream here..." 
+              style="width: 100%; min-height: 150px; margin: 0;"
+            >${dream.content}</textarea>
+            <div class="journal-page-actions">
+              <button onclick="saveDream(${dream.id})">💾 Save Dream</button>
+              <button onclick="deleteDream(${dream.id})" style="background: #ff6b6b;">🗑️ Delete</button>
+            </div>
+          `;
+        } else {
+          dreamElement.innerHTML = `
+            <div class="journal-page-header">
+              <span class="journal-page-date">${dream.date}</span>
+              <span>🌙 Dream</span>
+            </div>
+            <div class="journal-page-content">${dream.content || 'No dream content yet...'}</div>
+            <div class="journal-page-actions">
+              <button onclick="editDream(${dream.id})">✏️ Edit</button>
+              <button onclick="deleteDream(${dream.id})" style="background: #ff6b6b;">🗑️ Delete</button>
+            </div>
+          `;
+        }
+        
+        container.appendChild(dreamElement);
+      });
+    }
+
+    function saveDreamPages() {
+      localStorage.setItem("dreamPages", JSON.stringify(dreamPages));
+    }
+
+    function loadDreamPages() {
+      const saved = localStorage.getItem("dreamPages");
+      if (saved) {
+        dreamPages = JSON.parse(saved);
+      }
+    }
+
+    function toggleGoodnightMode() {
+      const btn = document.getElementById("goodnight-toggle");
+      const body = document.body;
+
+      goodnightMode = !goodnightMode;
+
+      if (goodnightMode) {
+        body.classList.add("cyber-night");
+        localStorage.setItem("goodnightMode", "true");
+        btn.textContent = "⭐ Rise and Shine";
+      } else {
+        body.classList.remove("cyber-night");
+        localStorage.setItem("goodnightMode", "false");
+        btn.textContent = "🌙 Goodnight Mode";
+      }
     }
 
     window.onload = () => {
-      const saved = localStorage.getItem("dreams");
-      if (saved) document.getElementById("dream-entry").value = saved;
+      loadDreamPages();
+      renderDreamPages();
+      
+      // Check if we should be in goodnight mode
+      const savedMode = localStorage.getItem("goodnightMode");
+      if (savedMode === "true") {
+        goodnightMode = true;
+        document.body.classList.add("cyber-night");
+        const btn = document.getElementById("goodnight-toggle");
+        if (btn) btn.textContent = "⭐ Rise and Shine";
+      }
+      
+      // Store current mode for next page load
+      localStorage.setItem("previousMode", savedMode || "false");
     };
   </script>
 </body>
