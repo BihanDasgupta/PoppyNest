@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Journal - PoppyNest</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-container">
+    <h1>📝 Journal</h1>
+    <textarea id="journal-entry" placeholder="How was your day?" rows="10"></textarea>
+    <button onclick="saveJournal()">Save Entry</button>
+    <p id="saved-msg"></p>
+    <a href="index.html">← Back to Chat</a>
+  </div>
+
+  <script>
+    function saveJournal() {
+      const text = document.getElementById("journal-entry").value;
+      localStorage.setItem("journal", text);
+      document.getElementById("saved-msg").textContent = "✅ Saved!";
+    }
+
+    window.onload = () => {
+      const saved = localStorage.getItem("journal");
+      if (saved) document.getElementById("journal-entry").value = saved;
+    };
+  </script>
+</body>
+</html>

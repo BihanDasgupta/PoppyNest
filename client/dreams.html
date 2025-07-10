@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dream Log - PoppyNest</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-container">
+    <h1>💤 Dream Log</h1>
+    <textarea id="dream-entry" placeholder="Write down your dreams..." rows="10"></textarea>
+    <button onclick="saveDream()">Save Dream</button>
+    <p id="dream-msg"></p>
+    <a href="index.html">← Back to Chat</a>
+  </div>
+
+  <script>
+    function saveDream() {
+      const text = document.getElementById("dream-entry").value;
+      localStorage.setItem("dreams", text);
+      document.getElementById("dream-msg").textContent = "🌙 Dream saved!";
+    }
+
+    window.onload = () => {
+      const saved = localStorage.getItem("dreams");
+      if (saved) document.getElementById("dream-entry").value = saved;
+    };
+  </script>
+</body>
+</html>

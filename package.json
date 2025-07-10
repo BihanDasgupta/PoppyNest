@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@capacitor/cli": "^7.4.1"
+  }
+}
