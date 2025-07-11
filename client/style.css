@@ -680,3 +680,54 @@ body.cyber-night .chat-date-pill {
     box-shadow: 0 1px 4px rgba(255, 105, 180, 0.10);
 }   
   
+/* Typing bubble (iMessage style) */
+.typing-bubble {
+    display: inline-block;
+    min-width: 48px;
+    max-width: 120px;
+    padding: 0.7rem 1.1rem;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
+    color: #5a4e4e;
+    font-size: 1rem;
+    margin-bottom: 0.2rem;
+    margin-top: 0.2rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.07);
+    border: 1px solid #fdd2e0;
+    position: relative;
+    animation: typingPulse 1.2s infinite alternate;
+}
+body.cyber-night .typing-bubble {
+    background: linear-gradient(135deg, #2a1a2e 0%, #1a1a2e 100%);
+    color: #ffb6c1;
+    border: 1px solid rgba(255, 182, 193, 0.2);
+    box-shadow: 0 1px 4px rgba(255, 105, 180, 0.10);
+}
+@keyframes typingPulse {
+    0% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+.typing-dots {
+    display: inline-block;
+    vertical-align: middle;
+}
+.typing-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    margin: 0 2px;
+    background: #d979a2;
+    border-radius: 50%;
+    opacity: 0.7;
+    animation: typingDotBlink 1.2s infinite both;
+}
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+body.cyber-night .typing-dot {
+    background: #ffb6c1;
+}
+@keyframes typingDotBlink {
+    0%, 80%, 100% { opacity: 0.7; }
+    40% { opacity: 1; }
+}   
+  

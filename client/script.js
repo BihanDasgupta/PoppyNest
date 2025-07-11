@@ -4,14 +4,43 @@ const chatForm = document.getElementById("chat-form");
 const userInput = document.getElementById("user-input");
 const chatBox = document.getElementById("chat-box");
 
+// Add a typing bubble to the chat
+function showTypingBubble() {
+  // Remove any existing typing bubble
+  const existing = document.getElementById('typing-bubble');
+  if (existing) existing.remove();
+  const typingDiv = document.createElement('div');
+  typingDiv.className = 'chat-message bot';
+  typingDiv.id = 'typing-bubble';
+  const bubble = document.createElement('div');
+  bubble.className = 'typing-bubble';
+  bubble.innerHTML = '<span class="typing-dots"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></span>';
+  typingDiv.appendChild(bubble);
+  chatBox.appendChild(typingDiv);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function removeTypingBubble() {
+  const existing = document.getElementById('typing-bubble');
+  if (existing) existing.remove();
+}
+
+// Update chat form submit to show typing bubble and delay AI response
 chatForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const userText = userInput.value;
   appendMessage("user", userText);
   userInput.value = "";
 
-  const botReply = await getBotResponse(userText);
+  showTypingBubble();
+  // Start fetching the AI response and the delay in parallel
+  const delayPromise = new Promise(res => setTimeout(res, 2000));
+  const botReplyPromise = getBotResponse(userText);
+  await delayPromise;
+  removeTypingBubble();
+  const botReply = await botReplyPromise;
   appendMessage("bot", botReply);
+  renderChatHistory();
 });
 
 function appendMessage(sender, text) {
@@ -107,16 +136,24 @@ function toggleGoodnightMode() {
 }
 
 async function getBotResponse(message) {
-  const response = await fetch("http://localhost:5000/api/chat", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ message })
-  });
+  try {
+    const response = await fetch("http://localhost:5000/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ message })
+    });
 
-  const data = await response.json();
-  return data.reply;
+    if (!response.ok) {
+      throw new Error("Server error");
+    }
+
+    const data = await response.json();
+    return data.reply;
+  } catch (err) {
+    return "Sorry, I couldn't connect to the server or received an invalid response. Please try again later.";
+  }
 }
 
 window.onload = () => {
