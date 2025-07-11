@@ -16,25 +16,26 @@
     <main class="journal-container">
       <button class="new-page-btn" onclick="addNewPage()">📄 New Entry</button>
       
-      <div id="journal-pages" class="journal-pages">
-        <!-- Journal pages will be dynamically added here -->
+      <div id="delete-modal" class="delete-modal fixed-top-modal" style="display:none;">
+        <div class="delete-modal-content">
+          <p id="delete-modal-text">Are you sure you want to delete this entry?</p>
+          <div class="delete-modal-actions">
+            <button id="confirm-delete-btn" class="delete-confirm-btn">Delete</button>
+            <button id="cancel-delete-btn" class="delete-cancel-btn">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="entries-scrollbox">
+        <div id="journal-pages" class="journal-pages">
+          <!-- Journal pages will be dynamically added here -->
+        </div>
       </div>
       
       <div class="button-group">
         <button id="goodnight-toggle" class="goodnight-btn" onclick="toggleGoodnightMode()">🌙 Goodnight Mode</button>
       </div>
     </main>
-
-    <!-- Custom Delete Confirmation Modal -->
-    <div id="delete-modal" class="delete-modal" style="display:none;">
-      <div class="delete-modal-content">
-        <p id="delete-modal-text">Are you sure you want to delete this entry?</p>
-        <div class="delete-modal-actions">
-          <button id="confirm-delete-btn" class="delete-confirm-btn">Delete</button>
-          <button id="cancel-delete-btn" class="delete-cancel-btn">Cancel</button>
-        </div>
-      </div>
-    </div>
 
     <nav class="nav-buttons">
       <a href="index.html">← Back to Chat</a>

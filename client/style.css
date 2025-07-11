@@ -619,3 +619,39 @@ body.cyber-night .delete-confirm-btn:hover {
     background: linear-gradient(135deg, #ff1493 0%, #ff69b4 100%);
 }   
   
+/* Scrollable entries box for journal and dream log */
+.entries-scrollbox {
+    max-height: 400px;
+    overflow-y: auto;
+    background: #fff8fc;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(255, 192, 203, 0.10);
+    border: 1px solid #fdd2e0;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 1.5rem;
+    transition: background 0.3s;
+}
+body.cyber-night .entries-scrollbox {
+    background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
+    border: 1px solid rgba(255, 182, 193, 0.2);
+    box-shadow: 0 2px 12px rgba(255, 105, 180, 0.10);
+}
+
+/* Modal area below new entry button */
+#delete-modal.fixed-top-modal {
+    position: absolute !important;
+    left: 0;
+    right: 0;
+    top: 90px;
+    margin: 0 auto;
+    z-index: 1100;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    background: none;
+    pointer-events: none;
+}
+#delete-modal.fixed-top-modal .delete-modal-content {
+    pointer-events: auto;
+}   
+  
