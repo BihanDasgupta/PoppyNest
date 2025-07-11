@@ -156,41 +156,41 @@ async function getBotResponse(message) {
   }
 }
 
-window.onload = () => {
-  renderChatHistory();
-  
+window.onload = async () => {
+  // Default to Goodnight Mode if not set
+  if (localStorage.getItem("goodnightMode") === null) {
+    localStorage.setItem("goodnightMode", "true");
+  }
+
   // Check if we should be in goodnight mode
   const savedMode = localStorage.getItem("goodnightMode");
-  const previousMode = localStorage.getItem("previousMode") || "false";
-  
   if (savedMode === "true") {
     goodnightMode = true;
     document.body.classList.add("cyber-night");
     const btn = document.getElementById("goodnight-toggle");
     if (btn) btn.textContent = "⭐ Rise and Shine";
-    
-    // Check if mode was changed on another page
-    if (previousMode === "false") {
-      appendMessage("bot", "🌙 Goodnight!");
-      setTimeout(() => {
-        appendMessage("bot", "Wishing you wonderful dreams ☺️ I'm here whenever you need me <3");
-      }, 2000);
-    }
   } else {
     goodnightMode = false;
     document.body.classList.remove("cyber-night");
     const btn = document.getElementById("goodnight-toggle");
     if (btn) btn.textContent = "🌙 Goodnight Mode";
-    
-    // Check if mode was changed on another page
-    if (previousMode === "true") {
-      appendMessage("bot", "☀️ Good morning!");
-      setTimeout(() => {
-        appendMessage("bot", "Welcome back to the daylight world ☺️ Wishing you a wonderful day <3");
-      }, 1500);
-    }
   }
-  
+
+  // Show Goodnight messages on first load if no chat history
+  const chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || [];
+  if (goodnightMode && chatHistory.length === 0) {
+    showTypingBubble();
+    await new Promise(res => setTimeout(res, 1200));
+    removeTypingBubble();
+    appendMessage("bot", "🌙 Goodnight!");
+    setTimeout(() => {
+      appendMessage("bot", "Wishing you wonderful dreams ☺️ I'm here whenever you need me <3");
+      renderChatHistory();
+    }, 1200);
+  }
+
+  renderChatHistory();
+
   // Store current mode for next page load
   localStorage.setItem("previousMode", savedMode);
 };
