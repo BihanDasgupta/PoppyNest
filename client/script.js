@@ -42,21 +42,31 @@ function appendMessage(sender, text) {
   localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
 }
 
-function loadChatHistory() {
+function renderChatHistory() {
+  chatBox.innerHTML = '';
   const chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || [];
+  let lastDate = null;
   chatHistory.forEach(msg => {
+    const msgDate = new Date(msg.timestamp);
+    const dateStr = msgDate.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+    if (dateStr !== lastDate) {
+      // Insert date separator
+      const dateSeparator = document.createElement('div');
+      dateSeparator.className = 'chat-date-separator';
+      dateSeparator.innerHTML = `<span class="chat-date-pill">${dateStr}</span>`;
+      chatBox.appendChild(dateSeparator);
+      lastDate = dateStr;
+    }
+    // Render message
     const msgDiv = document.createElement("div");
     msgDiv.classList.add("chat-message", msg.sender);
-    
     const bubble = document.createElement("div");
     bubble.classList.add("message-bubble");
     bubble.textContent = msg.text;
-    
     const timestamp = document.createElement("div");
     timestamp.classList.add("timestamp");
     const msgTime = new Date(msg.timestamp);
     timestamp.textContent = msgTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    
     msgDiv.appendChild(bubble);
     msgDiv.appendChild(timestamp);
     chatBox.appendChild(msgDiv);
@@ -110,7 +120,7 @@ async function getBotResponse(message) {
 }
 
 window.onload = () => {
-  loadChatHistory();
+  renderChatHistory();
   
   // Check if we should be in goodnight mode
   const savedMode = localStorage.getItem("goodnightMode");
