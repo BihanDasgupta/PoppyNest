@@ -1,3 +1,5 @@
+import './firebase-config.js';
+import './auth-service.js';
 import AuthService from './auth-service.js';
 
 let goodnightMode = false;
