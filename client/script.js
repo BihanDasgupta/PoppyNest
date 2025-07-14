@@ -1,10 +1,152 @@
+import AuthService from './auth-service.js';
+
 let goodnightMode = false;
+let authService = new AuthService();
 
 const chatForm = document.getElementById("chat-form");
 const userInput = document.getElementById("user-input");
 const chatBox = document.getElementById("chat-box");
+const goodnightToggle = document.getElementById("goodnight-toggle");
 
-// Add a typing bubble to the chat
+// Authentication form elements
+const loginForm = document.getElementById("login-form");
+const registerForm = document.getElementById("register-form");
+const showRegisterLink = document.getElementById("show-register");
+const showLoginLink = document.getElementById("show-login");
+const authError = document.getElementById("auth-error");
+
+// Make appendMessage globally accessible for goodnight greeting
+window.appendMessage = appendMessage;
+
+// Attach Goodnight Mode toggle event
+function attachGoodnightToggle() {
+  if (goodnightToggle) {
+    goodnightToggle.onclick = toggleGoodnightMode;
+  }
+}
+
+// Show/hide loading screen
+function showLoadingScreen() {
+  const loadingScreen = document.getElementById('loading-screen');
+  if (loadingScreen) loadingScreen.style.display = 'flex';
+  if (loginForm) loginForm.closest('.login-container').style.display = 'none';
+  const chatContainer = document.getElementById('chat-container');
+  if (chatContainer) chatContainer.style.display = 'none';
+}
+function hideLoadingScreen() {
+  const loadingScreen = document.getElementById('loading-screen');
+  if (loadingScreen) loadingScreen.style.display = 'none';
+}
+
+function scrollToBottom() {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      chatBox.scrollTop = chatBox.scrollHeight;
+    });
+  });
+}
+
+// Remove loading screen logic
+// Only show/hide login and chat containers based on authentication state
+async function handleAuthStateChange() {
+  if (authService.isAuthenticated()) {
+    await authService.loadUserChatHistory();
+    await renderChatHistory();
+    document.getElementById('chat-container').style.display = 'block';
+    document.getElementById('login-container').style.display = 'none';
+    scrollToBottom(); // Call after display change
+  } else {
+    await renderChatHistory();
+    document.getElementById('chat-container').style.display = 'none';
+    document.getElementById('login-container').style.display = 'flex';
+  }
+}
+
+// Initialize authentication UI
+function initAuthUI() {
+  // Show/hide register form
+  showRegisterLink.addEventListener("click", (e) => {
+    e.preventDefault();
+    loginForm.style.display = "none";
+    registerForm.style.display = "block";
+    hideAuthError();
+  });
+
+  // Show/hide login form
+  showLoginLink.addEventListener("click", (e) => {
+    e.preventDefault();
+    registerForm.style.display = "none";
+    loginForm.style.display = "block";
+    hideAuthError();
+  });
+
+  // Handle login form submission
+  loginForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("login-email").value;
+    const password = document.getElementById("login-password").value;
+    const result = await authService.login(email, password);
+    if (!result.success) {
+      showAuthError(result.error);
+    } else {
+      attachGoodnightToggle();
+      await handleAuthStateChange();
+    }
+  });
+
+  // Handle register form submission
+  registerForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const username = document.getElementById("register-username").value;
+    const email = document.getElementById("register-email").value;
+    const password = document.getElementById("register-password").value;
+    const confirmPassword = document.getElementById("register-confirm-password").value;
+    if (password !== confirmPassword) {
+      showAuthError("Passwords don't match");
+      return;
+    }
+    const result = await authService.register(email, password, username);
+    if (!result.success) {
+      showAuthError(result.error);
+    } else {
+      attachGoodnightToggle();
+      await handleAuthStateChange();
+    }
+  });
+}
+
+// Show authentication error
+function showAuthError(message) {
+  authError.textContent = message;
+  authError.style.display = "block";
+}
+
+// Hide authentication error
+function hideAuthError() {
+  authError.style.display = "none";
+}
+
+// Logout function
+window.logout = async () => {
+  const result = await authService.logout();
+  if (result.success) {
+    // Clear local chat history
+    localStorage.removeItem("chatHistory");
+    chatBox.innerHTML = "";
+    // Reset UI to show login form and hide register form
+    if (loginForm) loginForm.style.display = "block";
+    if (registerForm) registerForm.style.display = "none";
+    document.getElementById('login-container').style.display = 'flex';
+    document.getElementById('chat-container').style.display = 'none';
+    document.body.classList.add("cyber-night"); // Always return to goodnight mode on logout
+    goodnightMode = true;
+    const btn = document.getElementById("goodnight-toggle");
+    if (btn) btn.textContent = "⭐ Rise and Shine";
+    await handleAuthStateChange();
+  }
+};
+
+// Add a typing bubble to the chat (always at the bottom)
 function showTypingBubble() {
   // Remove any existing typing bubble
   const existing = document.getElementById('typing-bubble');
@@ -16,7 +158,7 @@ function showTypingBubble() {
   bubble.className = 'typing-bubble';
   bubble.innerHTML = '<span class="typing-dots"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></span>';
   typingDiv.appendChild(bubble);
-  chatBox.appendChild(typingDiv);
+  chatBox.appendChild(typingDiv); // Always append at the end
   chatBox.scrollTop = chatBox.scrollHeight;
 }
 
@@ -27,132 +169,108 @@ function removeTypingBubble() {
 
 // Split AI response into multiple messages
 function splitResponseIntoMessages(response) {
-  // Split by double line breaks, periods followed by space, or question marks
   const sentences = response.split(/(?<=[.!?])\s+/).filter(s => s.trim().length > 0);
-  
-  // If response is short, don't split it
   if (sentences.length <= 1 || response.length < 100) {
     return [response];
   }
-  
-  // Group sentences into messages (2-3 sentences per message)
   const messages = [];
   let currentMessage = '';
-  
   for (let i = 0; i < sentences.length; i++) {
     currentMessage += sentences[i] + ' ';
-    
-    // Create a new message every 2-3 sentences or if we have a substantial message
     if ((i + 1) % 2 === 0 || currentMessage.length > 150 || i === sentences.length - 1) {
       messages.push(currentMessage.trim());
       currentMessage = '';
     }
   }
-  
   return messages.filter(msg => msg.length > 0);
 }
 
-// Calculate typing delay based on message length
 function calculateTypingDelay(message) {
   const charCount = message.length;
-  const wordsPerMinute = 200; // Average typing speed
-  const charsPerMinute = wordsPerMinute * 5; // Rough estimate: 5 chars per word
-  const baseDelay = (charCount / charsPerMinute) * 60 * 1000; // Convert to milliseconds
-  
-  // Add some randomness and ensure minimum/maximum delays
-  const minDelay = 800; // Minimum 800ms
-  const maxDelay = 4000; // Maximum 4 seconds
-  const randomFactor = 0.7 + Math.random() * 0.6; // 0.7 to 1.3x multiplier
-  
+  const wordsPerMinute = 200;
+  const charsPerMinute = wordsPerMinute * 5;
+  const baseDelay = (charCount / charsPerMinute) * 60 * 1000;
+  const minDelay = 800;
+  const maxDelay = 4000;
+  const randomFactor = 0.7 + Math.random() * 0.6;
   return Math.min(Math.max(baseDelay * randomFactor, minDelay), maxDelay);
 }
 
-// Send multiple AI messages with typing bubbles
 async function sendMultipleMessages(userText) {
   const botReply = await getBotResponse(userText);
   const messages = splitResponseIntoMessages(botReply);
-  
   for (let i = 0; i < messages.length; i++) {
     if (i > 0) {
-      // Show typing bubble between messages
       showTypingBubble();
       const typingDelay = calculateTypingDelay(messages[i]);
       await new Promise(res => setTimeout(res, typingDelay));
       removeTypingBubble();
     }
-    
     appendMessage("bot", messages[i]);
-    renderChatHistory();
-    
-    // Small delay before next message (if not the last one)
-    if (i < messages.length - 1) {
-      await new Promise(res => setTimeout(res, 300 + Math.random() * 200)); // 300-500ms
+    await renderChatHistory();
+    if (i > 0 && i < messages.length - 1) {
+      await new Promise(res => setTimeout(res, 300 + Math.random() * 200));
     }
   }
 }
 
-// Update chat form submit to use multiple messages
 chatForm.addEventListener("submit", async (e) => {
   e.preventDefault();
-  const userText = userInput.value;
-  appendMessage("user", userText);
+  appendMessage("user", userInput.value);
   userInput.value = "";
-
+  await renderChatHistory(); // Ensure user's message is rendered before typing bubble
   showTypingBubble();
-  // Start fetching the AI response and the delay in parallel
   const delayPromise = new Promise(res => setTimeout(res, 2000));
-  const botReplyPromise = getBotResponse(userText);
+  const botReplyPromise = getBotResponse(userInput.value);
   await delayPromise;
   removeTypingBubble();
-  
-  // Send multiple messages instead of one
-  await sendMultipleMessages(userText);
+  await sendMultipleMessages(userInput.value);
 });
 
 function appendMessage(sender, text) {
   const msgDiv = document.createElement("div");
   msgDiv.classList.add("chat-message", sender);
-  
-  // Create message bubble
   const bubble = document.createElement("div");
   bubble.classList.add("message-bubble");
   bubble.textContent = text;
-  
-  // Create timestamp
   const timestamp = document.createElement("div");
   timestamp.classList.add("timestamp");
   const now = new Date();
   timestamp.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  
-  // Add bubble and timestamp to message div
   msgDiv.appendChild(bubble);
   msgDiv.appendChild(timestamp);
-  
   chatBox.appendChild(msgDiv);
   chatBox.scrollTop = chatBox.scrollHeight;
-  
-  // Save to localStorage
+  // Save message to user's account if authenticated
+  const message = { sender, text, timestamp: now.toISOString() };
+  if (authService.isAuthenticated()) {
+    authService.saveChatMessage(message);
+  }
+  // Also save to localStorage as fallback
   const chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || [];
-  chatHistory.push({ sender, text, timestamp: now.toISOString() });
+  chatHistory.push(message);
   localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
 }
 
-function renderChatHistory() {
+async function renderChatHistory() {
   chatBox.innerHTML = '';
-  const chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || [];
+  let chatHistory = [];
+  if (authService.isAuthenticated()) {
+    chatHistory = await authService.loadUserChatHistory();
+  } else {
+    chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || [];
+  }
   let lastDate = null;
   chatHistory.forEach(msg => {
     const msgDate = new Date(msg.timestamp);
     const dateStr = msgDate.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
     if (dateStr !== lastDate) {
-      // Insert date separator
       const dateSeparator = document.createElement('div');
       dateSeparator.className = 'chat-date-separator';
       dateSeparator.innerHTML = `<span class="chat-date-pill">${dateStr}</span>`;
       chatBox.appendChild(dateSeparator);
       lastDate = dateStr;
     }
-    // Render message
     const msgDiv = document.createElement("div");
     msgDiv.classList.add("chat-message", msg.sender);
     const bubble = document.createElement("div");
@@ -166,35 +284,29 @@ function renderChatHistory() {
     msgDiv.appendChild(timestamp);
     chatBox.appendChild(msgDiv);
   });
-  chatBox.scrollTop = chatBox.scrollHeight;
+  scrollToBottom();
 }
+
+// Remove any code that triggers appendMessage with the default messages on page load or auth state change
+// Only show goodnight/morning messages when toggling the mode
 
 function toggleGoodnightMode() {
   const btn = document.getElementById("goodnight-toggle");
   const body = document.body;
-
   goodnightMode = !goodnightMode;
-
   if (goodnightMode) {
-    // Enter cyber night mode
     body.classList.add("cyber-night");
     localStorage.setItem("goodnightMode", "true");
     appendMessage("bot", "🌙 Goodnight!");
     btn.textContent = "⭐ Rise and Shine";
-    
-    // Add some cyber night ambiance
     setTimeout(() => {
       appendMessage("bot", "Wishing you wonderful dreams ☺️ I'm here whenever you need me <3");
     }, 2000);
-    
   } else {
-    // Exit cyber night mode
     body.classList.remove("cyber-night");
     localStorage.setItem("goodnightMode", "false");
     appendMessage("bot", "☀️ Good morning!");
     btn.textContent = "🌙 Goodnight Mode";
-    
-    // Add morning message
     setTimeout(() => {
       appendMessage("bot", "Welcome back to the daylight world ☺️ Wishing you a wonderful day <3");
     }, 1500);
@@ -210,11 +322,9 @@ async function getBotResponse(message) {
       },
       body: JSON.stringify({ message })
     });
-
     if (!response.ok) {
       throw new Error("Server error");
     }
-
     const data = await response.json();
     return data.reply;
   } catch (err) {
@@ -223,12 +333,11 @@ async function getBotResponse(message) {
 }
 
 window.onload = async () => {
-  // Default to Goodnight Mode if not set
+  initAuthUI();
+  attachGoodnightToggle();
   if (localStorage.getItem("goodnightMode") === null) {
     localStorage.setItem("goodnightMode", "true");
   }
-
-  // Check if we should be in goodnight mode
   const savedMode = localStorage.getItem("goodnightMode");
   if (savedMode === "true") {
     goodnightMode = true;
@@ -241,22 +350,6 @@ window.onload = async () => {
     const btn = document.getElementById("goodnight-toggle");
     if (btn) btn.textContent = "🌙 Goodnight Mode";
   }
-
-  // Show Goodnight messages on first load if no chat history
-  const chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || [];
-  if (goodnightMode && chatHistory.length === 0) {
-    showTypingBubble();
-    await new Promise(res => setTimeout(res, 1200));
-    removeTypingBubble();
-    appendMessage("bot", "🌙 Goodnight!");
-    setTimeout(() => {
-      appendMessage("bot", "Wishing you wonderful dreams ☺️ I'm here whenever you need me <3");
-      renderChatHistory();
-    }, 1200);
-  }
-
-  renderChatHistory();
-
-  // Store current mode for next page load
+  await handleAuthStateChange();
   localStorage.setItem("previousMode", savedMode);
 };
