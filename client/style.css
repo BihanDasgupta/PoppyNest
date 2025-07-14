@@ -1318,7 +1318,7 @@ body.cyber-night textarea:focus {
     box-shadow: 0 2px 8px rgba(255, 192, 203, 0.2);
     transition: all 0.3s ease;
     position: relative;
-    max-width: 600px;
+    max-width: 900px !important;
     margin-left: auto;
     margin-right: auto;
 }
@@ -1528,6 +1528,7 @@ body.cyber-night .delete-confirm-btn:hover {
   
 /* Scrollable entries box for journal and dream log */
 .entries-scrollbox {
+    max-width: 800px;
     max-height: 400px;
     overflow-y: auto;
     background: #fff8fc;
@@ -1539,9 +1540,31 @@ body.cyber-night .delete-confirm-btn:hover {
     transition: background 0.3s;
 }
 body.cyber-night .entries-scrollbox {
+    max-width: 800px !important;
     background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
     border: 1px solid rgba(255, 182, 193, 0.2);
     box-shadow: 0 2px 12px rgba(255, 105, 180, 0.10);
+}
+
+.journal-container .entries-scrollbox,
+.dream-container .entries-scrollbox {
+  max-width: 800px !important;
+  max-height: 400px;
+  overflow-y: auto;
+  background: #fff8fc;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(255, 192, 203, 0.10);
+  border: 1px solid #fdd2e0;
+  padding: 1.2rem 1.5rem;
+  margin-bottom: 1.5rem;
+  transition: background 0.3s;
+}
+body.cyber-night .journal-container .entries-scrollbox,
+body.cyber-night .dream-container .entries-scrollbox {
+  max-width: 800px !important;
+  background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
+  border: 1px solid rgba(255, 182, 193, 0.2);
+  box-shadow: 0 2px 12px rgba(255, 105, 180, 0.10);
 }
 
 /* Modal area below new entry button */
@@ -1941,5 +1964,30 @@ body.cyber-night .footer-content p {
         padding: 0.5rem;
         font-size: 1rem;
     }
+}   
+  
+/* Mode toggle button style for gallery/editor */
+button.mode-toggle-btn {
+  background: linear-gradient(135deg, #f89ab7 0%, #e48bae 100%) !important;
+  color: white !important;
+  border: none;
+  border-radius: 10px;
+  padding: 0.8rem 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px rgba(255, 192, 203, 0.3);
+  margin-top: 0.5rem;
+}
+body.cyber-night button.mode-toggle-btn {
+  background: linear-gradient(145deg, #ff69b4 0%, #ff1493 100%) !important;
+  color: white !important;
+  box-shadow: 0 0 15px rgba(255, 105, 180, 0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+  text-shadow: 0 0 5px rgba(255,255,255,0.3);
+}
+body.cyber-night button.mode-toggle-btn:hover {
+  box-shadow: 0 0 20px rgba(255, 105, 180, 0.6);
+  transform: translateY(-2px);
 }   
   

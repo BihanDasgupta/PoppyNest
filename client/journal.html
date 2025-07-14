@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Journal - PoppyNest</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=1.2" />
 </head>
 <body>
   <!-- Floating flower elements for dark mode -->
@@ -72,7 +72,7 @@
   <div class="app-container">
     <header>
       <h1>📝 Journal</h1>
-      <p>What's on your mind? Write away ☺️</p>
+      <p>What's on your mind? Write it out ☺️</p>
     </header>
 
     <main class="journal-container">
@@ -88,8 +88,8 @@
         </div>
       </div>
 
-      <div class="entries-scrollbox">
-        <div id="journal-pages" class="journal-pages">
+      <div class="entries-scrollbox" style="max-width: 900px !important;">
+        <div id="journal-pages" class="journal-pages" style="max-width: 900px !important;">
           <!-- Journal pages will be dynamically added here -->
         </div>
       </div>
@@ -136,7 +136,7 @@
     function addNewPage() {
       const newPage = {
         id: Date.now(),
-        date: new Date().toLocaleDateString(),
+        date: new Date().toLocaleString(),
         content: '',
         isEditing: true
       };

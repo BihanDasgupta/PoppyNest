@@ -416,6 +416,369 @@
     body.cyber-night .color-neon-ice { background: #00bcd4; box-shadow: 0 0 10px #00bcd4aa; }
     body.cyber-night .color-neon-amber { background: #ffc400; box-shadow: 0 0 10px #ffc400aa; }
     body.cyber-night .color-neon-citron { background: #c6ff00; box-shadow: 0 0 10px #c6ff00aa; }
+
+    .brush-controls {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .brush-size {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .brush-size label {
+      font-size: 0.9rem;
+      color: #5a4e4e;
+      font-weight: 600;
+    }
+
+    body.cyber-night .brush-size label {
+      color: #ffb6c1;
+    }
+
+    .brush-size input[type="range"] {
+      width: 100px;
+      height: 6px;
+      border-radius: 3px;
+      background: #fdd2e0;
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    body.cyber-night .brush-size input[type="range"] {
+      background: rgba(255, 182, 193, 0.3);
+    }
+
+    .brush-size input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #ff69b4;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(255, 105, 180, 0.3);
+    }
+
+    body.cyber-night .brush-size input[type="range"]::-webkit-slider-thumb {
+      background: #ff1493;
+      box-shadow: 0 0 10px rgba(255, 20, 147, 0.6);
+    }
+
+    .drawing-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .drawing-actions button {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+    }
+
+    .clear-btn {
+      background: linear-gradient(135deg, #f89ab7 0%, #e48bae 100%);
+      color: white;
+      box-shadow: 0 2px 8px rgba(255, 192, 203, 0.3);
+    }
+
+    body.cyber-night .clear-btn {
+      background: linear-gradient(135deg, #ff1493 0%, #ff69b4 100%);
+      box-shadow: 0 0 15px rgba(255, 20, 147, 0.4);
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    }
+
+    .clear-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 192, 203, 0.4);
+    }
+
+    body.cyber-night .clear-btn:hover {
+      box-shadow: 0 0 20px rgba(255, 20, 147, 0.6);
+    }
+
+    .save-btn {
+      background: linear-gradient(135deg, #f89ab7 0%, #e48bae 100%);
+      color: white;
+      box-shadow: 0 2px 8px rgba(255, 192, 203, 0.3);
+    }
+
+    body.cyber-night .save-btn {
+      background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+      color: white;
+      box-shadow: 0 0 15px rgba(255, 105, 180, 0.4);
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    }
+
+    .save-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 192, 203, 0.4);
+    }
+
+    body.cyber-night .save-btn:hover {
+      box-shadow: 0 0 20px rgba(255, 105, 180, 0.6);
+    }
+
+    .mode-toggle-btn {
+      background: linear-gradient(135deg, #f89ab7 0%, #e48bae 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 0.8rem 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+      box-shadow: 0 2px 8px rgba(255, 192, 203, 0.3);
+    }
+
+    body.cyber-night .mode-toggle-btn {
+      background: linear-gradient(135deg, #2a1a2e 0%, #1a1a2e 100%);
+      color: #ffb6c1;
+      box-shadow: 0 0 15px rgba(255, 182, 193, 0.3);
+      text-shadow: 0 0 5px rgba(255, 182, 193, 0.3);
+    }
+
+    .mode-toggle-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 192, 203, 0.4);
+    }
+
+    body.cyber-night .mode-toggle-btn:hover {
+      box-shadow: 0 0 20px rgba(255, 182, 193, 0.5);
+    }
+
+    .eraser-btn {
+      background: linear-gradient(135deg, #f89ab7 0%, #e48bae 100%);
+      color: white;
+      box-shadow: 0 2px 8px rgba(255, 192, 203, 0.3);
+    }
+
+    body.cyber-night .eraser-btn {
+      background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+      color: white;
+      box-shadow: 0 0 15px rgba(255, 105, 180, 0.4);
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    }
+
+    .eraser-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 192, 203, 0.4);
+    }
+
+    body.cyber-night .eraser-btn:hover {
+      box-shadow: 0 0 20px rgba(255, 105, 180, 0.6);
+    }
+
+    .eraser-btn.active {
+      background: linear-gradient(135deg, #ff1493 0%, #c71585 100%);
+      color: white;
+      box-shadow: 0 0 15px rgba(255, 20, 147, 0.6);
+    }
+
+    body.cyber-night .eraser-btn.active {
+      background: linear-gradient(135deg, #ff1493 0%, #c71585 100%);
+      color: white;
+      box-shadow: 0 0 20px rgba(255, 20, 147, 0.8);
+    }
+
+    @media (max-width: 700px) {
+      .drawing-controls {
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+      
+      .color-palette {
+        order: 1;
+      }
+      
+      .brush-controls {
+        order: 2;
+      }
+      
+      .drawing-actions {
+        order: 3;
+      }
+    }
+
+    .color-pastel-red { background: #ff7f7f; }
+    .color-pastel-orange { background: #ffd1b3; }
+    .color-pastel-gold { background: #ffe680; }
+    .color-pastel-lime { background: #d4ffb2; }
+    .color-pastel-teal { background: #b2fff9; }
+    .color-pastel-cyan { background: #b2e6ff; }
+    .color-pastel-indigo { background: #c3b2ff; }
+    .color-pastel-violet { background: #e0b2ff; }
+    .color-pastel-magenta { background: #ffb2ef; }
+    .color-pastel-rose { background: #ffb2c7; }
+    .color-pastel-peach { background: #ffd6b2; }
+    .color-pastel-coral { background: #ffb2a6; }
+    .color-pastel-mint { background: #b2ffe6; }
+    .color-pastel-sky { background: #b2e6ff; }
+    .color-pastel-aqua { background: #b2fff9; }
+    .color-pastel-lavender { background: #e6e6fa; }
+    .color-pastel-brown { background: #d2b48c; }
+    .color-pastel-tan { background: #ffe4b5; }
+    .color-pastel-beige { background: #f5f5dc; }
+    .color-pastel-ivory { background: #fffff0; }
+    .color-pastel-white { background: #ffffff; }
+    .color-pastel-gray { background: #d3d3d3; }
+    .color-pastel-black { background: #000000; }
+    .color-pastel-mauve { background: #e0b2c7; }
+    .color-pastel-olive { background: #d4d7b2; }
+    .color-pastel-mustard { background: #ffe066; }
+    .color-pastel-emerald { background: #b2ffc7; }
+    .color-pastel-forest { background: #b2ffb2; }
+    .color-pastel-seafoam { background: #b2ffd9; }
+    .color-pastel-turquoise { background: #b2f0ff; }
+    .color-pastel-navy { background: #b2b8ff; }
+    .color-pastel-steel { background: #b2c7d9; }
+    .color-pastel-azure { background: #b2e0ff; }
+    .color-pastel-periwinkle { background: #b2b2ff; }
+    .color-pastel-plum { background: #d6b2ff; }
+    .color-pastel-raspberry { background: #ffb2d6; }
+    .color-pastel-apricot { background: #ffd1b2; }
+    .color-pastel-copper { background: #e6b2a6; }
+    .color-pastel-sand { background: #fff5b2; }
+    .color-pastel-mocha { background: #b2a18f; }
+    .color-pastel-charcoal { background: #b2b2b2; }
+    .color-pastel-slate { background: #b2b8c7; }
+    .color-pastel-eggplant { background: #c7b2d9; }
+    .color-pastel-melon { background: #ffb2b2; }
+    .color-pastel-celeste { background: #b2fff9; }
+    .color-pastel-ice { background: #e0fff9; }
+    .color-pastel-amber { background: #ffe0b2; }
+    .color-pastel-citron { background: #e6ffb2; }
+
+    body.cyber-night .color-neon-red { background: #ff1744; box-shadow: 0 0 10px #ff1744aa; }
+    body.cyber-night .color-neon-orange { background: #ff9100; box-shadow: 0 0 10px #ff9100aa; }
+    body.cyber-night .color-neon-gold { background: #ffd700; box-shadow: 0 0 10px #ffd700aa; }
+    body.cyber-night .color-neon-lime { background: #76ff03; box-shadow: 0 0 10px #76ff03aa; }
+    body.cyber-night .color-neon-teal { background: #1de9b6; box-shadow: 0 0 10px #1de9b6aa; }
+    body.cyber-night .color-neon-cyan { background: #00e5ff; box-shadow: 0 0 10px #00e5ffaa; }
+    body.cyber-night .color-neon-indigo { background: #651fff; box-shadow: 0 0 10px #651fffaa; }
+    body.cyber-night .color-neon-violet { background: #d500f9; box-shadow: 0 0 10px #d500f9aa; }
+    body.cyber-night .color-neon-magenta { background: #ff00ea; box-shadow: 0 0 10px #ff00eaaa; }
+    body.cyber-night .color-neon-rose { background: #ff4081; box-shadow: 0 0 10px #ff4081aa; }
+    body.cyber-night .color-neon-peach { background: #ff6d00; box-shadow: 0 0 10px #ff6d00aa; }
+    body.cyber-night .color-neon-coral { background: #ff5252; box-shadow: 0 0 10px #ff5252aa; }
+    body.cyber-night .color-neon-mint { background: #00ffcc; box-shadow: 0 0 10px #00ffccaa; }
+    body.cyber-night .color-neon-sky { background: #00b8ff; box-shadow: 0 0 10px #00b8ffaa; }
+    body.cyber-night .color-neon-aqua { background: #00fff7; box-shadow: 0 0 10px #00fff7aa; }
+    body.cyber-night .color-neon-lavender { background: #b388ff; box-shadow: 0 0 10px #b388ffaa; }
+    body.cyber-night .color-neon-brown { background: #a0522d; box-shadow: 0 0 10px #a0522daa; }
+    body.cyber-night .color-neon-tan { background: #ffd180; box-shadow: 0 0 10px #ffd180aa; }
+    body.cyber-night .color-neon-beige { background: #fff8e1; box-shadow: 0 0 10px #fff8e1aa; }
+    body.cyber-night .color-neon-ivory { background: #ffffb3; box-shadow: 0 0 10px #ffffb3aa; }
+    body.cyber-night .color-neon-white { background: #ffffff; box-shadow: 0 0 10px #ffffffaa; }
+    body.cyber-night .color-neon-gray { background: #bdbdbd; box-shadow: 0 0 10px #bdbdbdaa; }
+    body.cyber-night .color-neon-black { background: #000000; box-shadow: 0 0 10px #000000aa; }
+    body.cyber-night .color-neon-mauve { background: #c51162; box-shadow: 0 0 10px #c51162aa; }
+    body.cyber-night .color-neon-olive { background: #b2ff59; box-shadow: 0 0 10px #b2ff59aa; }
+    body.cyber-night .color-neon-mustard { background: #ffd600; box-shadow: 0 0 10px #ffd600aa; }
+    body.cyber-night .color-neon-emerald { background: #00e676; box-shadow: 0 0 10px #00e676aa; }
+    body.cyber-night .color-neon-forest { background: #00c853; box-shadow: 0 0 10px #00c853aa; }
+    body.cyber-night .color-neon-seafoam { background: #1de9b6; box-shadow: 0 0 10px #1de9b6aa; }
+    body.cyber-night .color-neon-turquoise { background: #00e5ee; box-shadow: 0 0 10px #00e5eeaa; }
+    body.cyber-night .color-neon-navy { background: #304ffe; box-shadow: 0 0 10px #304ffeaa; }
+    body.cyber-night .color-neon-steel { background: #00bcd4; box-shadow: 0 0 10px #00bcd4aa; }
+    body.cyber-night .color-neon-azure { background: #40c4ff; box-shadow: 0 0 10px #40c4ffaa; }
+    body.cyber-night .color-neon-periwinkle { background: #7c4dff; box-shadow: 0 0 10px #7c4dffaa; }
+    body.cyber-night .color-neon-plum { background: #aa00ff; box-shadow: 0 0 10px #aa00ffaa; }
+    body.cyber-night .color-neon-raspberry { background: #ff1744; box-shadow: 0 0 10px #ff1744aa; }
+    body.cyber-night .color-neon-apricot { background: #ffab40; box-shadow: 0 0 10px #ffab40aa; }
+    body.cyber-night .color-neon-copper { background: #ff7043; box-shadow: 0 0 10px #ff7043aa; }
+    body.cyber-night .color-neon-sand { background: #ffe082; box-shadow: 0 0 10px #ffe082aa; }
+    body.cyber-night .color-neon-mocha { background: #a1887f; box-shadow: 0 0 10px #a1887faa; }
+    body.cyber-night .color-neon-charcoal { background: #616161; box-shadow: 0 0 10px #616161aa; }
+    body.cyber-night .color-neon-slate { background: #78909c; box-shadow: 0 0 10px #78909caa; }
+    body.cyber-night .color-neon-eggplant { background: #8e24aa; box-shadow: 0 0 10px #8e24aaaa; }
+    body.cyber-night .color-neon-melon { background: #ff5252; box-shadow: 0 0 10px #ff5252aa; }
+    body.cyber-night .color-neon-celeste { background: #00e5ee; box-shadow: 0 0 10px #00e5eeaa; }
+    body.cyber-night .color-neon-ice { background: #00bcd4; box-shadow: 0 0 10px #00bcd4aa; }
+    body.cyber-night .color-neon-amber { background: #ffc400; box-shadow: 0 0 10px #ffc400aa; }
+    body.cyber-night .color-neon-citron { background: #c6ff00; box-shadow: 0 0 10px #c6ff00aa; }
+
+    .drawing-gallery {
+      width: 100%;
+      max-width: 700px;
+      margin: 2rem auto 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .drawing-entry {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      background: #fff8fc;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(255,192,203,0.08);
+      padding: 1rem 1.5rem;
+      transition: box-shadow 0.2s;
+    }
+    body.cyber-night .drawing-entry {
+      background: #1a1a2e;
+      box-shadow: 0 2px 12px rgba(255,182,193,0.12);
+    }
+    .drawing-thumb img {
+      width: 100px;
+      height: 80px;
+      object-fit: contain;
+      border-radius: 8px;
+      border: 1px solid #fdd2e0;
+      background: #fff;
+    }
+    body.cyber-night .drawing-thumb img {
+      border: 1px solid #ffb6c1;
+      background: #222;
+    }
+    .drawing-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .drawing-date {
+      font-size: 0.95rem;
+      color: #8b7d7d;
+    }
+    body.cyber-night .drawing-date {
+      color: #ffb6c1;
+    }
+    .delete-drawing-btn, .view-drawing-btn {
+      margin-right: 0.5rem;
+      background: linear-gradient(135deg, #f89ab7 0%, #e48bae 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0.4rem 1rem;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    body.cyber-night .delete-drawing-btn, body.cyber-night .view-drawing-btn {
+      background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+      color: white;
+    }
+    .delete-drawing-btn:hover, .view-drawing-btn:hover {
+      background: #ffb6c1;
+      color: #fff;
+    }
+    body.cyber-night .delete-drawing-btn:hover, body.cyber-night .view-drawing-btn:hover {
+      background: #ff1493;
+    }
   </style>
 </head>
 <body>
@@ -483,15 +846,32 @@
   <div class="floating-star-40">⭐</div>
   <div class="app-container">
     <header>
-      <h1>🌸 PoppyNest 🌸</h1>
-      <p>Your cozy bedtime companion🧸</p>
+      <h1>🎨 Draw</h1>
+      <p>Scribbling the stress away works like a charm 😵‍💫</p>
     </header>
-
-    <main class="draw-container">
+    <main class="draw-gallery-container">
+      <div style="display:flex;justify-content:center;margin-bottom:1.5rem;">
+        <button class="new-page-btn" id="newDrawingBtn">🖌️ New Drawing</button>
+      </div>
+      
+      <div id="delete-modal" class="delete-modal fixed-top-modal" style="display:none;">
+        <div class="delete-modal-content">
+          <p id="delete-modal-text">Are you sure you want to delete this drawing?</p>
+          <div class="delete-modal-actions">
+            <button id="confirm-delete-btn" class="delete-confirm-btn">Delete</button>
+            <button id="cancel-delete-btn" class="delete-cancel-btn">Cancel</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="entries-scrollbox" style="max-width:800px;margin:0 auto 1.5rem auto;">
+        <div id="drawing-gallery" class="drawing-gallery"></div>
+      </div>
+    </main>
+    <main class="draw-editor-container" style="display:none;">
       <div class="canvas-container">
         <canvas id="drawingCanvas" width="800" height="600"></canvas>
       </div>
-      
       <div class="drawing-controls">
         <div class="brush-controls">
           <div class="brush-size">
@@ -500,8 +880,6 @@
           </div>
           <button class="eraser-btn" id="eraserBtn">Eraser</button>
           <button class="clear-btn" id="clearBtn">Clear Canvas</button>
-          <button class="save-btn" id="saveBtn">Save Drawing</button>
-          <button class="mode-toggle-btn" id="modeToggleBtn">🌙 Goodnight Mode</button>
         </div>
         <div class="palette-scroll" style="overflow-x:auto; width:100%; max-width:650px; margin:0 auto;">
           <div class="color-palette">
@@ -561,9 +939,11 @@
           </div>
         </div>
       </div>
-      
+      <div class="drawing-actions">
+        <button class="save-btn" id="saveBtn">Save Drawing</button>
+        <button class="cancel-btn" id="cancelBtn">Cancel</button>
+      </div>
     </main>
-
     <nav class="nav-buttons">
       <a href="index.html">← Back to Chat</a>
       <a href="journal.html">📝 Journal</a>
@@ -579,21 +959,47 @@
     const eraserBtn = document.getElementById('eraserBtn');
     const clearBtn = document.getElementById('clearBtn');
     const saveBtn = document.getElementById('saveBtn');
-    const modeToggleBtn = document.getElementById('modeToggleBtn');
+    const newDrawingBtn = document.getElementById('newDrawingBtn');
+    const drawingGalleryContainer = document.querySelector('.draw-gallery-container');
+    const drawingEditorContainer = document.querySelector('.draw-editor-container');
+
+    // Delete modal variables
+    let drawingToDelete = null;
+
+    function showDeleteModal(drawingId) {
+      drawingToDelete = drawingId;
+      document.getElementById('delete-modal').style.display = 'flex';
+    }
+
+    function hideDeleteModal() {
+      drawingToDelete = null;
+      document.getElementById('delete-modal').style.display = 'none';
+    }
+
+    // Initialize delete modal event listeners
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('confirm-delete-btn').onclick = function() {
+        if (drawingToDelete !== null) {
+          deleteDrawingEntry(drawingToDelete);
+        }
+        hideDeleteModal();
+      };
+      document.getElementById('cancel-delete-btn').onclick = function() {
+        hideDeleteModal();
+      };
+    });
 
     // Initialize mode based on localStorage or default to light mode
     const savedMode = localStorage.getItem('goodnightMode');
     if (savedMode === 'true') {
       document.body.classList.add('cyber-night');
-      modeToggleBtn.textContent = '⭐ Rise and Shine';
-    } else {
-      modeToggleBtn.textContent = '🌙 Goodnight Mode';
     }
 
     let isDrawing = false;
     let currentColor = '#ffb6c1';
     let currentBrushSize = 5;
     let isEraser = false;
+    let currentDrawingData = null; // To store the data URL of the currently edited drawing
 
     // Get current color based on mode
     function getCurrentColor() {
@@ -645,80 +1051,204 @@
       setCanvasBackground();
     });
 
-    // Save drawing
-    saveBtn.addEventListener('click', () => {
-      const link = document.createElement('a');
-      link.download = 'poppynest-drawing.png';
-      link.href = canvas.toDataURL();
-      link.click();
-    });
+    // Drawing Entry Gallery Logic
+    function getDrawingEntries() {
+      return JSON.parse(localStorage.getItem('drawingEntries') || '[]');
+    }
+    function saveDrawingEntry(dataUrl) {
+      const entries = getDrawingEntries();
+      entries.unshift({ id: Date.now(), date: new Date().toLocaleString(), data: dataUrl });
+      localStorage.setItem('drawingEntries', JSON.stringify(entries));
+      renderDrawingGallery();
+    }
+    function deleteDrawingEntry(id) {
+      let entries = getDrawingEntries();
+      entries = entries.filter(entry => entry.id !== id);
+      localStorage.setItem('drawingEntries', JSON.stringify(entries));
+      renderDrawingGallery();
+    }
 
-    // Mode toggle
-    modeToggleBtn.addEventListener('click', () => {
-      const isDarkMode = document.body.classList.contains('cyber-night');
-      if (isDarkMode) {
-        document.body.classList.remove('cyber-night');
-        modeToggleBtn.textContent = '🌙 Goodnight Mode';
-        localStorage.setItem('goodnightMode', 'false');
-      } else {
-        document.body.classList.add('cyber-night');
-        modeToggleBtn.textContent = '⭐ Rise and Shine';
-        localStorage.setItem('goodnightMode', 'true');
+    function downloadDrawing(id) {
+      const entries = getDrawingEntries();
+      const entry = entries.find(e => e.id === id);
+      if (entry) {
+        // Create a download link
+        const link = document.createElement('a');
+        link.href = entry.data;
+        link.download = `drawing-${entry.id}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
       }
+    }
+    function renderDrawingGallery() {
+      const gallery = document.getElementById('drawing-gallery');
+      const entries = getDrawingEntries();
+      const isNight = document.body.classList.contains('cyber-night');
+      if (!entries.length) {
+        gallery.innerHTML = `
+          <div class="journal-empty" style="max-width:420px;margin:2.5rem auto 2rem auto;padding:2.2rem 1.5rem 2rem 1.5rem;border-radius:16px;${isNight ? 'background:linear-gradient(145deg,#1a1a2e 0%,#16213e 100%);border:1px solid rgba(255,182,193,0.2);box-shadow:0 2px 12px rgba(255,105,180,0.10);color:#ffb6c1;text-shadow:0 0 5px rgba(255,182,193,0.3);' : 'background:#fff8fc;border:1px solid #fdd2e0;box-shadow:0 4px 32px rgba(255,182,193,0.3);color:#d979a2;'}">
+            <span style="font-style:italic;font-family:'Quicksand',sans-serif;color:inherit;">No drawings recorded yet. Click \"New Drawing\" to start! 🎨</span>
+          </div>
+        `;
+        return;
+      }
+      gallery.innerHTML = entries.map((entry, i) => `
+        <div class="drawing-entry">
+          <div class="drawing-thumb"><img src="${entry.data}" alt="Drawing ${i+1}"/></div>
+          <div class="drawing-meta">
+            <span class="drawing-date">${entry.date}</span>
+            <button class="delete-drawing-btn" onclick="showDeleteModal(${entry.id})">🗑️ Delete</button>
+            <button class="view-drawing-btn" onclick="loadDrawingIntoEditor(${entry.id})">✏️ Edit</button>
+            <button class="view-drawing-btn" onclick="downloadDrawing(${entry.id})">💾 Save</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Function to load a drawing into the editor
+    function enterEditorView(entry) {
+      setCanvasBackground();
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (entry && entry.data) {
+        const img = new Image();
+        img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        img.src = entry.data;
+      }
+      isDrawing = false;
+      isEraser = false;
       currentColor = getCurrentColor();
+      brushSizeInput.value = 5;
+      colorOptions.forEach(opt => opt.classList.remove('active'));
+      colorOptions[0].classList.add('active');
+      eraserBtn.classList.remove('active');
+      drawingGalleryContainer.style.display = 'none';
+      drawingEditorContainer.style.display = 'block';
+    }
+
+    // Edit button
+    window.loadDrawingIntoEditor = function(id) {
+      const entries = getDrawingEntries();
+      const entry = entries.find(e => e.id === id);
+      currentDrawingData = entry ? entry.id : null;
+      enterEditorView(entry);
+    };
+
+    // New Drawing button
+    newDrawingBtn.addEventListener('click', () => {
+      currentDrawingData = null;
+      enterEditorView(null);
     });
 
-    // Drawing functions
+    // Save Drawing as Entry
+    saveBtn.addEventListener('click', () => {
+      const dataUrl = canvas.toDataURL();
+      let entries = getDrawingEntries();
+      if (currentDrawingData) {
+        // Update existing
+        entries = entries.map(e => e.id === currentDrawingData ? { ...e, data: dataUrl, date: new Date().toLocaleString() } : e);
+      } else {
+        // New entry
+        entries.unshift({ id: Date.now(), date: new Date().toLocaleString(), data: dataUrl });
+      }
+      localStorage.setItem('drawingEntries', JSON.stringify(entries));
+      renderDrawingGallery();
+      drawingEditorContainer.style.display = 'none';
+      drawingGalleryContainer.style.display = 'block';
+      currentDrawingData = null;
+    });
+
+    // Cancel button
+    document.getElementById('cancelBtn').addEventListener('click', () => {
+      drawingEditorContainer.style.display = 'none';
+      drawingGalleryContainer.style.display = 'block';
+      currentDrawingData = null;
+    });
+
+    // Drawing event listeners (re-attach on every editor entry)
+    function attachDrawingEvents() {
+      canvas.onmousedown = startDrawing;
+      canvas.onmousemove = draw;
+      canvas.onmouseup = stopDrawing;
+      canvas.onmouseout = stopDrawing;
+    }
+    function detachDrawingEvents() {
+      canvas.onmousedown = null;
+      canvas.onmousemove = null;
+      canvas.onmouseup = null;
+      canvas.onmouseout = null;
+    }
+    function showEditor() {
+      attachDrawingEvents();
+    }
+    // Attach events on editor show
+    drawingEditorContainer.addEventListener('transitionend', showEditor);
+    // Also attach immediately in case no transition
+    showEditor();
+    // Color selection (fix for editor re-entry)
+    colorOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        colorOptions.forEach(opt => opt.classList.remove('active'));
+        option.classList.add('active');
+        currentColor = getCurrentColor();
+        isEraser = false;
+        eraserBtn.classList.remove('active');
+      });
+    });
+
+    // Render gallery on load
+    renderDrawingGallery();
+
+    // --- Drawing event handlers ---
     function startDrawing(e) {
       isDrawing = true;
+      ctx.beginPath();
       draw(e);
     }
-
-    function stopDrawing() {
-      isDrawing = false;
-      ctx.beginPath();
-    }
-
     function draw(e) {
       if (!isDrawing) return;
-
       const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-
+      const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+      const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
       ctx.lineWidth = currentBrushSize;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
-
       if (isEraser) {
-        const isDarkMode = document.body.classList.contains('cyber-night');
-        ctx.strokeStyle = isDarkMode ? '#000' : '#fff';
+        ctx.strokeStyle = document.body.classList.contains('cyber-night') ? '#000' : '#fff';
       } else {
         ctx.strokeStyle = getCurrentColor();
       }
-
       ctx.lineTo(x, y);
       ctx.stroke();
       ctx.beginPath();
       ctx.moveTo(x, y);
     }
+    function stopDrawing() {
+      isDrawing = false;
+      ctx.beginPath();
+    }
 
-    // Event listeners
-    canvas.addEventListener('mousedown', startDrawing);
-    canvas.addEventListener('mousemove', draw);
-    canvas.addEventListener('mouseup', stopDrawing);
-    canvas.addEventListener('mouseout', stopDrawing);
-
-    // Handle mode changes
-    const observer = new MutationObserver(() => {
-      setCanvasBackground();
-      currentColor = getCurrentColor();
-    });
-
-    observer.observe(document.body, {
-      attributes: true,
-      attributeFilter: ['class']
-    });
+    // Remove previous mode toggle button injection in gallery header
+    const oldModeBtn = document.getElementById('modeToggleBtnGallery');
+    if (oldModeBtn && oldModeBtn.parentNode) oldModeBtn.parentNode.removeChild(oldModeBtn);
+    // Add mode toggle button to the bottom of the gallery view
+    const drawGalleryContainer = document.querySelector('.draw-gallery-container');
+    if (drawGalleryContainer && !document.getElementById('modeToggleBtnGallery')) {
+      const modeBtn = document.createElement('button');
+      modeBtn.className = 'mode-toggle-btn';
+      modeBtn.id = 'modeToggleBtnGallery';
+      modeBtn.textContent = document.body.classList.contains('cyber-night') ? '⭐ Rise and Shine' : '🌙 Goodnight Mode';
+      modeBtn.style.display = 'block';
+      modeBtn.style.margin = '2.5rem auto 0 auto';
+      modeBtn.onclick = function() {
+        const isNight = document.body.classList.toggle('cyber-night');
+        localStorage.setItem('goodnightMode', isNight ? 'true' : 'false');
+        modeBtn.textContent = isNight ? '⭐ Rise and Shine' : '🌙 Goodnight Mode';
+        setCanvasBackground();
+        renderDrawingGallery();
+      };
+      drawGalleryContainer.appendChild(modeBtn);
+    }
   </script>
 </body>
 </html> 
