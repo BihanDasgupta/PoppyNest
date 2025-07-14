@@ -216,15 +216,15 @@ async function sendMultipleMessages(userText) {
 
 chatForm.addEventListener("submit", async (e) => {
   e.preventDefault();
-  appendMessage("user", userInput.value);
+  const userText = userInput.value; // Save before clearing!
+  appendMessage("user", userText);
   userInput.value = "";
   await renderChatHistory(); // Ensure user's message is rendered before typing bubble
   showTypingBubble();
   const delayPromise = new Promise(res => setTimeout(res, 2000));
-  const botReplyPromise = getBotResponse(userInput.value);
   await delayPromise;
   removeTypingBubble();
-  await sendMultipleMessages(userInput.value);
+  await sendMultipleMessages(userText); // Pass the saved text!
 });
 
 function appendMessage(sender, text) {
