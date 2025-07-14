@@ -1869,6 +1869,56 @@ body.cyber-night .logout-btn:hover {
   box-shadow: 0 4px 20px rgba(255, 105, 180, 0.3);
 }   
   
+/* Footer styling */
+.app-footer {
+  margin-top: 2rem;
+  padding: 1.5rem 0;
+  text-align: center;
+  border-top: 1px solid #fdd2e0;
+  transition: all 0.5s ease;
+}
+
+body.cyber-night .app-footer {
+  border-top: 1px solid rgba(255, 182, 193, 0.3);
+}
+
+.footer-content p {
+  font-size: 1rem;
+  color: #d979a2;
+  margin: 0;
+  font-weight: 500;
+  animation: footerGlow 3s ease-in-out infinite alternate;
+}
+
+body.cyber-night .footer-content p {
+  color: #ffb6c1;
+  animation: neonFooterGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes footerGlow {
+  from { 
+    text-shadow: 0 0 5px rgba(217, 121, 162, 0.3), 0 0 10px rgba(217, 121, 162, 0.2); 
+  }
+  to { 
+    text-shadow: 0 0 10px rgba(217, 121, 162, 0.5), 0 0 20px rgba(217, 121, 162, 0.3); 
+  }
+}
+
+@keyframes neonFooterGlow {
+  from { 
+    text-shadow: 
+      0 0 5px rgba(255, 182, 193, 0.5), 
+      0 0 10px rgba(255, 182, 193, 0.3), 
+      0 0 15px rgba(255, 182, 193, 0.2); 
+  }
+  to { 
+    text-shadow: 
+      0 0 10px rgba(255, 182, 193, 0.7), 
+      0 0 20px rgba(255, 182, 193, 0.5), 
+      0 0 30px rgba(255, 182, 193, 0.3); 
+  }
+}
+
 @media (max-width: 1000px) {
     .app-container {
         max-width: 98vw;

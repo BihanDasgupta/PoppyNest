@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PoppyNest - Draw</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .draw-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+      max-width: 100%;
+      margin: 0 auto;
+      align-items: center;
+    }
+
+    .canvas-container {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(255, 192, 203, 0.3);
+      background: #fff;
+      border: 1px solid #fdd2e0;
+      transition: all 0.5s ease;
+    }
+
+    body.cyber-night .canvas-container {
+      background: #000;
+      box-shadow: 0 0 20px rgba(255, 105, 180, 0.4);
+      border: 1px solid rgba(255, 182, 193, 0.3);
+    }
+
+    #drawingCanvas {
+      display: block;
+      cursor: crosshair;
+      border-radius: 14px;
+    }
+
+    .drawing-controls {
+      display: flex;
+      gap: 1rem;
+      margin: 1rem 0;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .color-palette {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 0.5rem;
+      justify-content: center;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .color-option {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .color-option:hover {
+      transform: scale(1.1);
+    }
+
+    .color-option.active {
+      border-color: #ff69b4;
+      transform: scale(1.15);
+    }
+
+    body.cyber-night .color-option.active {
+      border-color: #00ff00;
+      box-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
+    }
+
+    /* Light mode colors (pastel) */
+    .color-pastel-pink { background: #ffb6c1; }
+    .color-pastel-blue { background: #add8e6; }
+    .color-pastel-green { background: #98fb98; }
+    .color-pastel-yellow { background: #f0e68c; }
+    .color-pastel-purple { background: #dda0dd; }
+    .color-pastel-orange { background: #ffb347; }
+    .color-pastel-cyan { background: #87ceeb; }
+    .color-pastel-magenta { background: #f8b4d9; }
+    .color-pastel-lavender { background: #e6e6fa; }
+    .color-pastel-coral { background: #ff7f50; }
+    .color-pastel-mint { background: #f5fffa; }
+    .color-pastel-peach { background: #ffdab9; }
+    .color-pastel-sky { background: #87cefa; }
+    .color-pastel-rose { background: #ffe4e1; }
+    .color-pastel-lime { background: #32cd32; }
+    .color-pastel-gold { background: #ffd700; }
+    .color-pastel-teal { background: #40e0d0; }
+    .color-pastel-salmon { background: #fa8072; }
+    .color-pastel-indigo { background: #4b0082; }
+    .color-pastel-aqua { background: #7fffd4; }
+
+    /* Dark mode colors (neon) */
+    body.cyber-night .color-neon-pink { background: #ff1493; box-shadow: 0 0 10px rgba(255, 20, 147, 0.6); }
+    body.cyber-night .color-neon-blue { background: #00bfff; box-shadow: 0 0 10px rgba(0, 191, 255, 0.6); }
+    body.cyber-night .color-neon-green { background: #00ff00; box-shadow: 0 0 10px rgba(0, 255, 0, 0.6); }
+    body.cyber-night .color-neon-yellow { background: #ffff00; box-shadow: 0 0 10px rgba(255, 255, 0, 0.6); }
+    body.cyber-night .color-neon-purple { background: #9400d3; box-shadow: 0 0 10px rgba(148, 0, 211, 0.6); }
+    body.cyber-night .color-neon-orange { background: #ff4500; box-shadow: 0 0 10px rgba(255, 69, 0, 0.6); }
+    body.cyber-night .color-neon-cyan { background: #00ffff; box-shadow: 0 0 10px rgba(0, 255, 255, 0.6); }
+    body.cyber-night .color-neon-magenta { background: #ff00ff; box-shadow: 0 0 10px rgba(255, 0, 255, 0.6); }
+    body.cyber-night .color-neon-lavender { background: #9370db; box-shadow: 0 0 10px rgba(147, 112, 219, 0.6); }
+    body.cyber-night .color-neon-coral { background: #ff6347; box-shadow: 0 0 10px rgba(255, 99, 71, 0.6); }
+    body.cyber-night .color-neon-mint { background: #00fa9a; box-shadow: 0 0 10px rgba(0, 250, 154, 0.6); }
+    body.cyber-night .color-neon-peach { background: #ffa500; box-shadow: 0 0 10px rgba(255, 165, 0, 0.6); }
+    body.cyber-night .color-neon-sky { background: #1e90ff; box-shadow: 0 0 10px rgba(30, 144, 255, 0.6); }
+    body.cyber-night .color-neon-rose { background: #ff69b4; box-shadow: 0 0 10px rgba(255, 105, 180, 0.6); }
+    body.cyber-night .color-neon-lime { background: #adff2f; box-shadow: 0 0 10px rgba(173, 255, 47, 0.6); }
+    body.cyber-night .color-neon-gold { background: #ffd700; box-shadow: 0 0 10px rgba(255, 215, 0, 0.6); }
+    body.cyber-night .color-neon-teal { background: #00ced1; box-shadow: 0 0 10px rgba(0, 206, 209, 0.6); }
+    body.cyber-night .color-neon-salmon { background: #ff6b6b; box-shadow: 0 0 10px rgba(255, 107, 107, 0.6); }
+    body.cyber-night .color-neon-indigo { background: #4169e1; box-shadow: 0 0 10px rgba(65, 105, 225, 0.6); }
+    body.cyber-night .color-neon-aqua { background: #00ffff; box-shadow: 0 0 10px rgba(0, 255, 255, 0.6); }
+
+    .brush-controls {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .brush-size {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .brush-size label {
+      font-size: 0.9rem;
+      color: #5a4e4e;
+      font-weight: 600;
+    }
+
+    body.cyber-night .brush-size label {
+      color: #ffb6c1;
+    }
+
+    .brush-size input[type="range"] {
+      width: 100px;
+      height: 6px;
+      border-radius: 3px;
+      background: #fdd2e0;
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    body.cyber-night .brush-size input[type="range"] {
+      background: rgba(255, 182, 193, 0.3);
+    }
+
+    .brush-size input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #ff69b4;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(255, 105, 180, 0.3);
+    }
+
+    body.cyber-night .brush-size input[type="range"]::-webkit-slider-thumb {
+      background: #ff1493;
+      box-shadow: 0 0 10px rgba(255, 20, 147, 0.6);
+    }
+
+    .drawing-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .drawing-actions button {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+    }
+
+    .clear-btn {
+      background: linear-gradient(135deg, #f89ab7 0%, #e48bae 100%);
+      color: white;
+      box-shadow: 0 2px 8px rgba(255, 192, 203, 0.3);
+    }
+
+    body.cyber-night .clear-btn {
+      background: linear-gradient(135deg, #ff1493 0%, #ff69b4 100%);
+      box-shadow: 0 0 15px rgba(255, 20, 147, 0.4);
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    }
+
+    .clear-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 192, 203, 0.4);
+    }
+
+    body.cyber-night .clear-btn:hover {
+      box-shadow: 0 0 20px rgba(255, 20, 147, 0.6);
+    }
+
+    .save-btn {
+      background: linear-gradient(135deg, #f89ab7 0%, #e48bae 100%);
+      color: white;
+      box-shadow: 0 2px 8px rgba(255, 192, 203, 0.3);
+    }
+
+    body.cyber-night .save-btn {
+      background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+      color: white;
+      box-shadow: 0 0 15px rgba(255, 105, 180, 0.4);
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    }
+
+    .save-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 192, 203, 0.4);
+    }
+
+    body.cyber-night .save-btn:hover {
+      box-shadow: 0 0 20px rgba(255, 105, 180, 0.6);
+    }
+
+    .mode-toggle-btn {
+      background: linear-gradient(135deg, #f89ab7 0%, #e48bae 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 0.8rem 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+      box-shadow: 0 2px 8px rgba(255, 192, 203, 0.3);
+    }
+
+    body.cyber-night .mode-toggle-btn {
+      background: linear-gradient(135deg, #2a1a2e 0%, #1a1a2e 100%);
+      color: #ffb6c1;
+      box-shadow: 0 0 15px rgba(255, 182, 193, 0.3);
+      text-shadow: 0 0 5px rgba(255, 182, 193, 0.3);
+    }
+
+    .mode-toggle-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 192, 203, 0.4);
+    }
+
+    body.cyber-night .mode-toggle-btn:hover {
+      box-shadow: 0 0 20px rgba(255, 182, 193, 0.5);
+    }
+
+    .eraser-btn {
+      background: linear-gradient(135deg, #f89ab7 0%, #e48bae 100%);
+      color: white;
+      box-shadow: 0 2px 8px rgba(255, 192, 203, 0.3);
+    }
+
+    body.cyber-night .eraser-btn {
+      background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+      color: white;
+      box-shadow: 0 0 15px rgba(255, 105, 180, 0.4);
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    }
+
+    .eraser-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 192, 203, 0.4);
+    }
+
+    body.cyber-night .eraser-btn:hover {
+      box-shadow: 0 0 20px rgba(255, 105, 180, 0.6);
+    }
+
+    .eraser-btn.active {
+      background: linear-gradient(135deg, #ff1493 0%, #c71585 100%);
+      color: white;
+      box-shadow: 0 0 15px rgba(255, 20, 147, 0.6);
+    }
+
+    body.cyber-night .eraser-btn.active {
+      background: linear-gradient(135deg, #ff1493 0%, #c71585 100%);
+      color: white;
+      box-shadow: 0 0 20px rgba(255, 20, 147, 0.8);
+    }
+
+    @media (max-width: 700px) {
+      .drawing-controls {
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+      
+      .color-palette {
+        order: 1;
+      }
+      
+      .brush-controls {
+        order: 2;
+      }
+      
+      .drawing-actions {
+        order: 3;
+      }
+    }
+
+    .color-pastel-red { background: #ff7f7f; }
+    .color-pastel-orange { background: #ffd1b3; }
+    .color-pastel-gold { background: #ffe680; }
+    .color-pastel-lime { background: #d4ffb2; }
+    .color-pastel-teal { background: #b2fff9; }
+    .color-pastel-cyan { background: #b2e6ff; }
+    .color-pastel-indigo { background: #c3b2ff; }
+    .color-pastel-violet { background: #e0b2ff; }
+    .color-pastel-magenta { background: #ffb2ef; }
+    .color-pastel-rose { background: #ffb2c7; }
+    .color-pastel-peach { background: #ffd6b2; }
+    .color-pastel-coral { background: #ffb2a6; }
+    .color-pastel-mint { background: #b2ffe6; }
+    .color-pastel-sky { background: #b2e6ff; }
+    .color-pastel-aqua { background: #b2fff9; }
+    .color-pastel-lavender { background: #e6e6fa; }
+    .color-pastel-brown { background: #d2b48c; }
+    .color-pastel-tan { background: #ffe4b5; }
+    .color-pastel-beige { background: #f5f5dc; }
+    .color-pastel-ivory { background: #fffff0; }
+    .color-pastel-white { background: #ffffff; }
+    .color-pastel-gray { background: #d3d3d3; }
+    .color-pastel-black { background: #000000; }
+    .color-pastel-mauve { background: #e0b2c7; }
+    .color-pastel-olive { background: #d4d7b2; }
+    .color-pastel-mustard { background: #ffe066; }
+    .color-pastel-emerald { background: #b2ffc7; }
+    .color-pastel-forest { background: #b2ffb2; }
+    .color-pastel-seafoam { background: #b2ffd9; }
+    .color-pastel-turquoise { background: #b2f0ff; }
+    .color-pastel-navy { background: #b2b8ff; }
+    .color-pastel-steel { background: #b2c7d9; }
+    .color-pastel-azure { background: #b2e0ff; }
+    .color-pastel-periwinkle { background: #b2b2ff; }
+    .color-pastel-plum { background: #d6b2ff; }
+    .color-pastel-raspberry { background: #ffb2d6; }
+    .color-pastel-apricot { background: #ffd1b2; }
+    .color-pastel-copper { background: #e6b2a6; }
+    .color-pastel-sand { background: #fff5b2; }
+    .color-pastel-mocha { background: #b2a18f; }
+    .color-pastel-charcoal { background: #b2b2b2; }
+    .color-pastel-slate { background: #b2b8c7; }
+    .color-pastel-eggplant { background: #c7b2d9; }
+    .color-pastel-melon { background: #ffb2b2; }
+    .color-pastel-celeste { background: #b2fff9; }
+    .color-pastel-ice { background: #e0fff9; }
+    .color-pastel-amber { background: #ffe0b2; }
+    .color-pastel-citron { background: #e6ffb2; }
+
+    body.cyber-night .color-neon-red { background: #ff1744; box-shadow: 0 0 10px #ff1744aa; }
+    body.cyber-night .color-neon-orange { background: #ff9100; box-shadow: 0 0 10px #ff9100aa; }
+    body.cyber-night .color-neon-gold { background: #ffd700; box-shadow: 0 0 10px #ffd700aa; }
+    body.cyber-night .color-neon-lime { background: #76ff03; box-shadow: 0 0 10px #76ff03aa; }
+    body.cyber-night .color-neon-teal { background: #1de9b6; box-shadow: 0 0 10px #1de9b6aa; }
+    body.cyber-night .color-neon-cyan { background: #00e5ff; box-shadow: 0 0 10px #00e5ffaa; }
+    body.cyber-night .color-neon-indigo { background: #651fff; box-shadow: 0 0 10px #651fffaa; }
+    body.cyber-night .color-neon-violet { background: #d500f9; box-shadow: 0 0 10px #d500f9aa; }
+    body.cyber-night .color-neon-magenta { background: #ff00ea; box-shadow: 0 0 10px #ff00eaaa; }
+    body.cyber-night .color-neon-rose { background: #ff4081; box-shadow: 0 0 10px #ff4081aa; }
+    body.cyber-night .color-neon-peach { background: #ff6d00; box-shadow: 0 0 10px #ff6d00aa; }
+    body.cyber-night .color-neon-coral { background: #ff5252; box-shadow: 0 0 10px #ff5252aa; }
+    body.cyber-night .color-neon-mint { background: #00ffcc; box-shadow: 0 0 10px #00ffccaa; }
+    body.cyber-night .color-neon-sky { background: #00b8ff; box-shadow: 0 0 10px #00b8ffaa; }
+    body.cyber-night .color-neon-aqua { background: #00fff7; box-shadow: 0 0 10px #00fff7aa; }
+    body.cyber-night .color-neon-lavender { background: #b388ff; box-shadow: 0 0 10px #b388ffaa; }
+    body.cyber-night .color-neon-brown { background: #a0522d; box-shadow: 0 0 10px #a0522daa; }
+    body.cyber-night .color-neon-tan { background: #ffd180; box-shadow: 0 0 10px #ffd180aa; }
+    body.cyber-night .color-neon-beige { background: #fff8e1; box-shadow: 0 0 10px #fff8e1aa; }
+    body.cyber-night .color-neon-ivory { background: #ffffb3; box-shadow: 0 0 10px #ffffb3aa; }
+    body.cyber-night .color-neon-white { background: #ffffff; box-shadow: 0 0 10px #ffffffaa; }
+    body.cyber-night .color-neon-gray { background: #bdbdbd; box-shadow: 0 0 10px #bdbdbdaa; }
+    body.cyber-night .color-neon-black { background: #000000; box-shadow: 0 0 10px #000000aa; }
+    body.cyber-night .color-neon-mauve { background: #c51162; box-shadow: 0 0 10px #c51162aa; }
+    body.cyber-night .color-neon-olive { background: #b2ff59; box-shadow: 0 0 10px #b2ff59aa; }
+    body.cyber-night .color-neon-mustard { background: #ffd600; box-shadow: 0 0 10px #ffd600aa; }
+    body.cyber-night .color-neon-emerald { background: #00e676; box-shadow: 0 0 10px #00e676aa; }
+    body.cyber-night .color-neon-forest { background: #00c853; box-shadow: 0 0 10px #00c853aa; }
+    body.cyber-night .color-neon-seafoam { background: #1de9b6; box-shadow: 0 0 10px #1de9b6aa; }
+    body.cyber-night .color-neon-turquoise { background: #00e5ee; box-shadow: 0 0 10px #00e5eeaa; }
+    body.cyber-night .color-neon-navy { background: #304ffe; box-shadow: 0 0 10px #304ffeaa; }
+    body.cyber-night .color-neon-steel { background: #00bcd4; box-shadow: 0 0 10px #00bcd4aa; }
+    body.cyber-night .color-neon-azure { background: #40c4ff; box-shadow: 0 0 10px #40c4ffaa; }
+    body.cyber-night .color-neon-periwinkle { background: #7c4dff; box-shadow: 0 0 10px #7c4dffaa; }
+    body.cyber-night .color-neon-plum { background: #aa00ff; box-shadow: 0 0 10px #aa00ffaa; }
+    body.cyber-night .color-neon-raspberry { background: #ff1744; box-shadow: 0 0 10px #ff1744aa; }
+    body.cyber-night .color-neon-apricot { background: #ffab40; box-shadow: 0 0 10px #ffab40aa; }
+    body.cyber-night .color-neon-copper { background: #ff7043; box-shadow: 0 0 10px #ff7043aa; }
+    body.cyber-night .color-neon-sand { background: #ffe082; box-shadow: 0 0 10px #ffe082aa; }
+    body.cyber-night .color-neon-mocha { background: #a1887f; box-shadow: 0 0 10px #a1887faa; }
+    body.cyber-night .color-neon-charcoal { background: #616161; box-shadow: 0 0 10px #616161aa; }
+    body.cyber-night .color-neon-slate { background: #78909c; box-shadow: 0 0 10px #78909caa; }
+    body.cyber-night .color-neon-eggplant { background: #8e24aa; box-shadow: 0 0 10px #8e24aaaa; }
+    body.cyber-night .color-neon-melon { background: #ff5252; box-shadow: 0 0 10px #ff5252aa; }
+    body.cyber-night .color-neon-celeste { background: #00e5ee; box-shadow: 0 0 10px #00e5eeaa; }
+    body.cyber-night .color-neon-ice { background: #00bcd4; box-shadow: 0 0 10px #00bcd4aa; }
+    body.cyber-night .color-neon-amber { background: #ffc400; box-shadow: 0 0 10px #ffc400aa; }
+    body.cyber-night .color-neon-citron { background: #c6ff00; box-shadow: 0 0 10px #c6ff00aa; }
+  </style>
+</head>
+<body>
+  <!-- Floating flower elements for dark mode -->
+  <div class="floating-emoji-1">🌸</div>
+  <div class="floating-emoji-2">🌸</div>
+  <div class="floating-emoji-3">🌸</div>
+  <div class="floating-emoji-4">🌸</div>
+  <div class="floating-emoji-5">🌸</div>
+  <div class="floating-emoji-6">🌸</div>
+  <div class="floating-emoji-7">🌸</div>
+  <div class="floating-emoji-8">🌸</div>
+  <div class="floating-emoji-9">🌸</div>
+  <div class="floating-emoji-10">🌸</div>
+  <div class="floating-emoji-11">🌸</div>
+  <div class="floating-emoji-12">🌸</div>
+  <div class="floating-emoji-13">🌸</div>
+  <div class="floating-emoji-14">🌸</div>
+  <div class="floating-emoji-15">🌸</div>
+  <div class="floating-emoji-16">🌸</div>
+  <div class="floating-emoji-17">🌸</div>
+  <div class="floating-emoji-18">🌸</div>
+  <div class="floating-emoji-19">🌸</div>
+  <div class="floating-emoji-20">🌸</div>
+  <!-- Floating star elements for dark mode -->
+  <div class="floating-star-1">⭐</div>
+  <div class="floating-star-2">⭐</div>
+  <div class="floating-star-3">⭐</div>
+  <div class="floating-star-4">⭐</div>
+  <div class="floating-star-5">⭐</div>
+  <div class="floating-star-6">⭐</div>
+  <div class="floating-star-7">⭐</div>
+  <div class="floating-star-8">⭐</div>
+  <div class="floating-star-9">⭐</div>
+  <div class="floating-star-10">⭐</div>
+  <div class="floating-star-11">⭐</div>
+  <div class="floating-star-12">⭐</div>
+  <div class="floating-star-13">⭐</div>
+  <div class="floating-star-14">⭐</div>
+  <div class="floating-star-15">⭐</div>
+  <div class="floating-star-16">⭐</div>
+  <div class="floating-star-17">⭐</div>
+  <div class="floating-star-18">⭐</div>
+  <div class="floating-star-19">⭐</div>
+  <div class="floating-star-20">⭐</div>
+  <div class="floating-star-21">⭐</div>
+  <div class="floating-star-22">⭐</div>
+  <div class="floating-star-23">⭐</div>
+  <div class="floating-star-24">⭐</div>
+  <div class="floating-star-25">⭐</div>
+  <div class="floating-star-26">⭐</div>
+  <div class="floating-star-27">⭐</div>
+  <div class="floating-star-28">⭐</div>
+  <div class="floating-star-29">⭐</div>
+  <div class="floating-star-30">⭐</div>
+  <div class="floating-star-31">⭐</div>
+  <div class="floating-star-32">⭐</div>
+  <div class="floating-star-33">⭐</div>
+  <div class="floating-star-34">⭐</div>
+  <div class="floating-star-35">⭐</div>
+  <div class="floating-star-36">⭐</div>
+  <div class="floating-star-37">⭐</div>
+  <div class="floating-star-38">⭐</div>
+  <div class="floating-star-39">⭐</div>
+  <div class="floating-star-40">⭐</div>
+  <div class="app-container">
+    <header>
+      <h1>🌸 PoppyNest 🌸</h1>
+      <p>Your cozy bedtime companion🧸</p>
+    </header>
+
+    <main class="draw-container">
+      <div class="canvas-container">
+        <canvas id="drawingCanvas" width="800" height="600"></canvas>
+      </div>
+      
+      <div class="drawing-controls">
+        <div class="brush-controls">
+          <div class="brush-size">
+            <label for="brushSize">Brush Size</label>
+            <input type="range" id="brushSize" min="1" max="50" value="5">
+          </div>
+          <button class="eraser-btn" id="eraserBtn">Eraser</button>
+          <button class="clear-btn" id="clearBtn">Clear Canvas</button>
+          <button class="save-btn" id="saveBtn">Save Drawing</button>
+          <button class="mode-toggle-btn" id="modeToggleBtn">🌙 Goodnight Mode</button>
+        </div>
+        <div class="palette-scroll" style="overflow-x:auto; width:100%; max-width:650px; margin:0 auto;">
+          <div class="color-palette">
+            <div class="color-option color-pastel-pink color-neon-pink active" data-color-light="#ffb6c1" data-color-dark="#ff1493"></div>
+            <div class="color-option color-pastel-red color-neon-red" data-color-light="#ff7f7f" data-color-dark="#ff1744"></div>
+            <div class="color-option color-pastel-orange color-neon-orange" data-color-light="#ffd1b3" data-color-dark="#ff9100"></div>
+            <div class="color-option color-pastel-yellow color-neon-yellow" data-color-light="#fff9b1" data-color-dark="#ffff00"></div>
+            <div class="color-option color-pastel-gold color-neon-gold" data-color-light="#ffe680" data-color-dark="#ffd700"></div>
+            <div class="color-option color-pastel-lime color-neon-lime" data-color-light="#d4ffb2" data-color-dark="#76ff03"></div>
+            <div class="color-option color-pastel-green color-neon-green" data-color-light="#b2ffd6" data-color-dark="#00ff00"></div>
+            <div class="color-option color-pastel-teal color-neon-teal" data-color-light="#b2fff9" data-color-dark="#1de9b6"></div>
+            <div class="color-option color-pastel-cyan color-neon-cyan" data-color-light="#b2e6ff" data-color-dark="#00e5ff"></div>
+            <div class="color-option color-pastel-blue color-neon-blue" data-color-light="#b2c7ff" data-color-dark="#2979ff"></div>
+            <div class="color-option color-pastel-indigo color-neon-indigo" data-color-light="#c3b2ff" data-color-dark="#651fff"></div>
+            <div class="color-option color-pastel-violet color-neon-violet" data-color-light="#e0b2ff" data-color-dark="#d500f9"></div>
+            <div class="color-option color-pastel-purple color-neon-purple" data-color-light="#e6b2ff" data-color-dark="#a020f0"></div>
+            <div class="color-option color-pastel-magenta color-neon-magenta" data-color-light="#ffb2ef" data-color-dark="#ff00ea"></div>
+            <div class="color-option color-pastel-rose color-neon-rose" data-color-light="#ffb2c7" data-color-dark="#ff4081"></div>
+            <div class="color-option color-pastel-peach color-neon-peach" data-color-light="#ffd6b2" data-color-dark="#ff6d00"></div>
+            <div class="color-option color-pastel-coral color-neon-coral" data-color-light="#ffb2a6" data-color-dark="#ff5252"></div>
+            <div class="color-option color-pastel-mint color-neon-mint" data-color-light="#b2ffe6" data-color-dark="#00ffcc"></div>
+            <div class="color-option color-pastel-sky color-neon-sky" data-color-light="#b2e6ff" data-color-dark="#00b8ff"></div>
+            <div class="color-option color-pastel-aqua color-neon-aqua" data-color-light="#b2fff9" data-color-dark="#00fff7"></div>
+            <div class="color-option color-pastel-lavender color-neon-lavender" data-color-light="#e6e6fa" data-color-dark="#b388ff"></div>
+            <div class="color-option color-pastel-brown color-neon-brown" data-color-light="#d2b48c" data-color-dark="#a0522d"></div>
+            <div class="color-option color-pastel-tan color-neon-tan" data-color-light="#ffe4b5" data-color-dark="#ffd180"></div>
+            <div class="color-option color-pastel-beige color-neon-beige" data-color-light="#f5f5dc" data-color-dark="#fff8e1"></div>
+            <div class="color-option color-pastel-ivory color-neon-ivory" data-color-light="#fffff0" data-color-dark="#ffffb3"></div>
+            <div class="color-option color-pastel-white color-neon-white" data-color-light="#ffffff" data-color-dark="#ffffff"></div>
+            <div class="color-option color-pastel-gray color-neon-gray" data-color-light="#d3d3d3" data-color-dark="#bdbdbd"></div>
+            <div class="color-option color-pastel-black color-neon-black" data-color-light="#000000" data-color-dark="#000000"></div>
+            <div class="color-option color-pastel-mauve color-neon-mauve" data-color-light="#e0b2c7" data-color-dark="#c51162"></div>
+            <div class="color-option color-pastel-olive color-neon-olive" data-color-light="#d4d7b2" data-color-dark="#b2ff59"></div>
+            <div class="color-option color-pastel-mustard color-neon-mustard" data-color-light="#ffe066" data-color-dark="#ffd600"></div>
+            <div class="color-option color-pastel-emerald color-neon-emerald" data-color-light="#b2ffc7" data-color-dark="#00e676"></div>
+            <div class="color-option color-pastel-forest color-neon-forest" data-color-light="#b2ffb2" data-color-dark="#00c853"></div>
+            <div class="color-option color-pastel-seafoam color-neon-seafoam" data-color-light="#b2ffd9" data-color-dark="#1de9b6"></div>
+            <div class="color-option color-pastel-turquoise color-neon-turquoise" data-color-light="#b2f0ff" data-color-dark="#00e5ee"></div>
+            <div class="color-option color-pastel-navy color-neon-navy" data-color-light="#b2b8ff" data-color-dark="#304ffe"></div>
+            <div class="color-option color-pastel-steel color-neon-steel" data-color-light="#b2c7d9" data-color-dark="#00bcd4"></div>
+            <div class="color-option color-pastel-azure color-neon-azure" data-color-light="#b2e0ff" data-color-dark="#40c4ff"></div>
+            <div class="color-option color-pastel-periwinkle color-neon-periwinkle" data-color-light="#b2b2ff" data-color-dark="#7c4dff"></div>
+            <div class="color-option color-pastel-plum color-neon-plum" data-color-light="#d6b2ff" data-color-dark="#aa00ff"></div>
+            <div class="color-option color-pastel-raspberry color-neon-raspberry" data-color-light="#ffb2d6" data-color-dark="#ff1744"></div>
+            <div class="color-option color-pastel-apricot color-neon-apricot" data-color-light="#ffd1b2" data-color-dark="#ffab40"></div>
+            <div class="color-option color-pastel-copper color-neon-copper" data-color-light="#e6b2a6" data-color-dark="#ff7043"></div>
+            <div class="color-option color-pastel-sand color-neon-sand" data-color-light="#fff5b2" data-color-dark="#ffe082"></div>
+            <div class="color-option color-pastel-mocha color-neon-mocha" data-color-light="#b2a18f" data-color-dark="#a1887f"></div>
+            <div class="color-option color-pastel-charcoal color-neon-charcoal" data-color-light="#b2b2b2" data-color-dark="#616161"></div>
+            <div class="color-option color-pastel-slate color-neon-slate" data-color-light="#b2b8c7" data-color-dark="#78909c"></div>
+            <div class="color-option color-pastel-eggplant color-neon-eggplant" data-color-light="#c7b2d9" data-color-dark="#8e24aa"></div>
+            <div class="color-option color-pastel-melon color-neon-melon" data-color-light="#ffb2b2" data-color-dark="#ff5252"></div>
+            <div class="color-option color-pastel-celeste color-neon-celeste" data-color-light="#b2fff9" data-color-dark="#00e5ee"></div>
+            <div class="color-option color-pastel-ice color-neon-ice" data-color-light="#e0fff9" data-color-dark="#00bcd4"></div>
+            <div class="color-option color-pastel-amber color-neon-amber" data-color-light="#ffe0b2" data-color-dark="#ffc400"></div>
+            <div class="color-option color-pastel-citron color-neon-citron" data-color-light="#e6ffb2" data-color-dark="#c6ff00"></div>
+          </div>
+        </div>
+      </div>
+      
+    </main>
+
+    <nav class="nav-buttons">
+      <a href="index.html">← Back to Chat</a>
+      <a href="journal.html">📝 Journal</a>
+      <a href="dreams.html">💤 Dream Log</a>
+    </nav>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('drawingCanvas');
+    const ctx = canvas.getContext('2d');
+    const colorOptions = document.querySelectorAll('.color-option');
+    const brushSizeInput = document.getElementById('brushSize');
+    const eraserBtn = document.getElementById('eraserBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const saveBtn = document.getElementById('saveBtn');
+    const modeToggleBtn = document.getElementById('modeToggleBtn');
+
+    // Initialize mode based on localStorage or default to light mode
+    const savedMode = localStorage.getItem('goodnightMode');
+    if (savedMode === 'true') {
+      document.body.classList.add('cyber-night');
+      modeToggleBtn.textContent = '⭐ Rise and Shine';
+    } else {
+      modeToggleBtn.textContent = '🌙 Goodnight Mode';
+    }
+
+    let isDrawing = false;
+    let currentColor = '#ffb6c1';
+    let currentBrushSize = 5;
+    let isEraser = false;
+
+    // Get current color based on mode
+    function getCurrentColor() {
+      const isDarkMode = document.body.classList.contains('cyber-night');
+      const activeOption = document.querySelector('.color-option.active');
+      if (activeOption) {
+        return isDarkMode ? activeOption.dataset.colorDark : activeOption.dataset.colorLight;
+      }
+      return isDarkMode ? '#ff1493' : '#ffb6c1';
+    }
+
+    // Set canvas background based on mode
+    function setCanvasBackground() {
+      const isDarkMode = document.body.classList.contains('cyber-night');
+      ctx.fillStyle = isDarkMode ? '#000' : '#fff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    // Initialize canvas
+    setCanvasBackground();
+
+    // Color selection
+    colorOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        colorOptions.forEach(opt => opt.classList.remove('active'));
+        option.classList.add('active');
+        currentColor = getCurrentColor();
+        isEraser = false;
+        eraserBtn.classList.remove('active');
+      });
+    });
+
+    // Brush size
+    brushSizeInput.addEventListener('input', (e) => {
+      currentBrushSize = parseInt(e.target.value);
+    });
+
+    // Eraser toggle
+    eraserBtn.addEventListener('click', () => {
+      isEraser = !isEraser;
+      eraserBtn.classList.toggle('active');
+      if (isEraser) {
+        colorOptions.forEach(opt => opt.classList.remove('active'));
+      }
+    });
+
+    // Clear canvas
+    clearBtn.addEventListener('click', () => {
+      setCanvasBackground();
+    });
+
+    // Save drawing
+    saveBtn.addEventListener('click', () => {
+      const link = document.createElement('a');
+      link.download = 'poppynest-drawing.png';
+      link.href = canvas.toDataURL();
+      link.click();
+    });
+
+    // Mode toggle
+    modeToggleBtn.addEventListener('click', () => {
+      const isDarkMode = document.body.classList.contains('cyber-night');
+      if (isDarkMode) {
+        document.body.classList.remove('cyber-night');
+        modeToggleBtn.textContent = '🌙 Goodnight Mode';
+        localStorage.setItem('goodnightMode', 'false');
+      } else {
+        document.body.classList.add('cyber-night');
+        modeToggleBtn.textContent = '⭐ Rise and Shine';
+        localStorage.setItem('goodnightMode', 'true');
+      }
+      currentColor = getCurrentColor();
+    });
+
+    // Drawing functions
+    function startDrawing(e) {
+      isDrawing = true;
+      draw(e);
+    }
+
+    function stopDrawing() {
+      isDrawing = false;
+      ctx.beginPath();
+    }
+
+    function draw(e) {
+      if (!isDrawing) return;
+
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      ctx.lineWidth = currentBrushSize;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      if (isEraser) {
+        const isDarkMode = document.body.classList.contains('cyber-night');
+        ctx.strokeStyle = isDarkMode ? '#000' : '#fff';
+      } else {
+        ctx.strokeStyle = getCurrentColor();
+      }
+
+      ctx.lineTo(x, y);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+    }
+
+    // Event listeners
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mouseout', stopDrawing);
+
+    // Handle mode changes
+    const observer = new MutationObserver(() => {
+      setCanvasBackground();
+      currentColor = getCurrentColor();
+    });
+
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+  </script>
+</body>
+</html> 
