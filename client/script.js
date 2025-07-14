@@ -52,6 +52,21 @@ function splitResponseIntoMessages(response) {
   return messages.filter(msg => msg.length > 0);
 }
 
+// Calculate typing delay based on message length
+function calculateTypingDelay(message) {
+  const charCount = message.length;
+  const wordsPerMinute = 200; // Average typing speed
+  const charsPerMinute = wordsPerMinute * 5; // Rough estimate: 5 chars per word
+  const baseDelay = (charCount / charsPerMinute) * 60 * 1000; // Convert to milliseconds
+  
+  // Add some randomness and ensure minimum/maximum delays
+  const minDelay = 800; // Minimum 800ms
+  const maxDelay = 4000; // Maximum 4 seconds
+  const randomFactor = 0.7 + Math.random() * 0.6; // 0.7 to 1.3x multiplier
+  
+  return Math.min(Math.max(baseDelay * randomFactor, minDelay), maxDelay);
+}
+
 // Send multiple AI messages with typing bubbles
 async function sendMultipleMessages(userText) {
   const botReply = await getBotResponse(userText);
@@ -61,7 +76,8 @@ async function sendMultipleMessages(userText) {
     if (i > 0) {
       // Show typing bubble between messages
       showTypingBubble();
-      await new Promise(res => setTimeout(res, 800 + Math.random() * 400)); // Random delay 800-1200ms
+      const typingDelay = calculateTypingDelay(messages[i]);
+      await new Promise(res => setTimeout(res, typingDelay));
       removeTypingBubble();
     }
     
