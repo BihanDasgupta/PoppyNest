@@ -25,7 +25,57 @@ function removeTypingBubble() {
   if (existing) existing.remove();
 }
 
-// Update chat form submit to show typing bubble and delay AI response
+// Split AI response into multiple messages
+function splitResponseIntoMessages(response) {
+  // Split by double line breaks, periods followed by space, or question marks
+  const sentences = response.split(/(?<=[.!?])\s+/).filter(s => s.trim().length > 0);
+  
+  // If response is short, don't split it
+  if (sentences.length <= 1 || response.length < 100) {
+    return [response];
+  }
+  
+  // Group sentences into messages (2-3 sentences per message)
+  const messages = [];
+  let currentMessage = '';
+  
+  for (let i = 0; i < sentences.length; i++) {
+    currentMessage += sentences[i] + ' ';
+    
+    // Create a new message every 2-3 sentences or if we have a substantial message
+    if ((i + 1) % 2 === 0 || currentMessage.length > 150 || i === sentences.length - 1) {
+      messages.push(currentMessage.trim());
+      currentMessage = '';
+    }
+  }
+  
+  return messages.filter(msg => msg.length > 0);
+}
+
+// Send multiple AI messages with typing bubbles
+async function sendMultipleMessages(userText) {
+  const botReply = await getBotResponse(userText);
+  const messages = splitResponseIntoMessages(botReply);
+  
+  for (let i = 0; i < messages.length; i++) {
+    if (i > 0) {
+      // Show typing bubble between messages
+      showTypingBubble();
+      await new Promise(res => setTimeout(res, 800 + Math.random() * 400)); // Random delay 800-1200ms
+      removeTypingBubble();
+    }
+    
+    appendMessage("bot", messages[i]);
+    renderChatHistory();
+    
+    // Small delay before next message (if not the last one)
+    if (i < messages.length - 1) {
+      await new Promise(res => setTimeout(res, 300 + Math.random() * 200)); // 300-500ms
+    }
+  }
+}
+
+// Update chat form submit to use multiple messages
 chatForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const userText = userInput.value;
@@ -38,9 +88,9 @@ chatForm.addEventListener("submit", async (e) => {
   const botReplyPromise = getBotResponse(userText);
   await delayPromise;
   removeTypingBubble();
-  const botReply = await botReplyPromise;
-  appendMessage("bot", botReply);
-  renderChatHistory();
+  
+  // Send multiple messages instead of one
+  await sendMultipleMessages(userText);
 });
 
 function appendMessage(sender, text) {
