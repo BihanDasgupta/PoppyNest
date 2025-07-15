@@ -13,7 +13,7 @@
 - **AI Chat**: OpenAI API (via server)
 - **Database & Auth**: Firebase
 - **Deployment**: Netlify
-- 
+
 ---
 
 ## 💤 Features
