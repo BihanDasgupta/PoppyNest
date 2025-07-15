@@ -179,8 +179,6 @@ If you are experiencing a mental health crisis, please seek help from a licensed
 
 ---
 
----
-
 ## 🙏 Credits
 
 Made with love by **Bihan Dasgupta** 💖  
