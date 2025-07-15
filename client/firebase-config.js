@@ -1,3 +1,4 @@
+console.log("ENV:", import.meta.env);
 console.log('All env:', import.meta.env);
 console.log('Test var:', import.meta.env.VITE_TEST_VAR);
 // Firebase configuration using environment variables
