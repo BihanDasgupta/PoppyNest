@@ -1,12 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PoppyNest - Redirect</title>
-    <meta http-equiv="refresh" content="0; url=client/index.html">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PoppyNest</title>
+  <script type="module" crossorigin src="/assets/index-Ch2Gy0FO.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index--5MmuSEI.css">
 </head>
-<body>
-    <p>Redirecting to <a href="client/index.html">PoppyNest Client</a>...</p>
+<body class="cyber-night">
+  <!-- Floating flower elements for dark mode -->
+  <div class="floating-emoji-1">🌸</div>
+  <div class="floating-emoji-2">🌸</div>
+  <div class="floating-emoji-3">🌸</div>
+  <div class="floating-emoji-4">🌸</div>
+  <div class="floating-emoji-5">🌸</div>
+  <div class="floating-emoji-6">🌸</div>
+  <div class="floating-emoji-7">🌸</div>
+  <div class="floating-emoji-8">🌸</div>
+  <div class="floating-emoji-9">🌸</div>
+  <div class="floating-emoji-10">🌸</div>
+  <div class="floating-emoji-11">🌸</div>
+  <div class="floating-emoji-12">🌸</div>
+  <div class="floating-emoji-13">🌸</div>
+  <div class="floating-emoji-14">🌸</div>
+  <div class="floating-emoji-15">🌸</div>
+  <div class="floating-emoji-16">🌸</div>
+  <div class="floating-emoji-17">🌸</div>
+  <div class="floating-emoji-18">🌸</div>
+  <div class="floating-emoji-19">🌸</div>
+  <div class="floating-emoji-20">🌸</div>
+  
+  <!-- Floating star elements for dark mode -->
+  <div class="floating-star-1">⭐</div>
+  <div class="floating-star-2">⭐</div>
+  <div class="floating-star-3">⭐</div>
+  <div class="floating-star-4">⭐</div>
+  <div class="floating-star-5">⭐</div>
+  <div class="floating-star-6">⭐</div>
+  <div class="floating-star-7">⭐</div>
+  <div class="floating-star-8">⭐</div>
+  <div class="floating-star-9">⭐</div>
+  <div class="floating-star-10">⭐</div>
+  <div class="floating-star-11">⭐</div>
+  <div class="floating-star-12">⭐</div>
+  <div class="floating-star-13">⭐</div>
+  <div class="floating-star-14">⭐</div>
+  <div class="floating-star-15">⭐</div>
+  <div class="floating-star-16">⭐</div>
+  <div class="floating-star-17">⭐</div>
+  <div class="floating-star-18">⭐</div>
+  <div class="floating-star-19">⭐</div>
+  <div class="floating-star-20">⭐</div>
+  <div class="floating-star-21">⭐</div>
+  <div class="floating-star-22">⭐</div>
+  <div class="floating-star-23">⭐</div>
+  <div class="floating-star-24">⭐</div>
+  <div class="floating-star-25">⭐</div>
+  <div class="floating-star-26">⭐</div>
+  <div class="floating-star-27">⭐</div>
+  <div class="floating-star-28">⭐</div>
+  <div class="floating-star-29">⭐</div>
+  <div class="floating-star-30">⭐</div>
+  <div class="floating-star-31">⭐</div>
+  <div class="floating-star-32">⭐</div>
+  <div class="floating-star-33">⭐</div>
+  <div class="floating-star-34">⭐</div>
+  <div class="floating-star-35">⭐</div>
+  <div class="floating-star-36">⭐</div>
+  <div class="floating-star-37">⭐</div>
+  <div class="floating-star-38">⭐</div>
+  <div class="floating-star-39">⭐</div>
+  <div class="floating-star-40">⭐</div>
+  
+  <div class="app-container">
+    <header>
+      <h1>🌸 PoppyNest 🌸</h1>
+      <p>Your cozy bedtime companion🧸</p>
+      <div id="user-info" class="user-info" style="display: none;"></div>
+    </header>
+
+    <!-- Login/Register Container -->
+    <div id="login-container" class="login-container" style="display: none;">
+      <div class="auth-box">
+        <h2>Welcome to PoppyNest 🌸</h2>
+        <p>Sign in to save your conversations</p>
+        
+        <!-- Login Form -->
+        <form id="login-form" class="auth-form">
+          <h3>Sign In</h3>
+          <input type="email" id="login-email" placeholder="Email" required />
+          <input type="password" id="login-password" placeholder="Password" required />
+          <button type="submit">Sign In</button>
+          <p class="auth-switch">Don't have an account? <a href="#" id="show-register">Sign Up</a></p>
+        </form>
+
+        <!-- Register Form -->
+        <form id="register-form" class="auth-form" style="display: none;">
+          <h3>Create Account</h3>
+          <input type="text" id="register-username" placeholder="Username" required />
+          <input type="email" id="register-email" placeholder="Email" required />
+          <input type="password" id="register-password" placeholder="Password" required />
+          <input type="password" id="register-confirm-password" placeholder="Confirm Password" required />
+          <button type="submit">Create Account</button>
+          <p class="auth-switch">Already have an account? <a href="#" id="show-login">Sign In</a></p>
+        </form>
+
+        <div id="auth-error" class="auth-error" style="display: none;"></div>
+      </div>
+    </div>
+
+    <!-- Chat Container -->
+    <main id="chat-container" class="chat-container" style="display: none;">
+      <div id="chat-box" class="chat-box"></div>
+      <button id="scroll-bottom-btn" class="scroll-bottom-btn" style="display: none;">▼ New Messages</button>
+      <form id="chat-form">
+        <input type="text" id="user-input" placeholder="Share your thoughts..." required />
+        <button type="submit">Send</button>
+        <button id="goodnight-toggle" class="goodnight-btn" type="button">🌙 Goodnight Mode</button>
+      </form>
+      <nav class="nav-buttons">
+        <a href="journal.html">📝 Journal</a>
+        <a href="draw.html">🎨 Draw</a>
+        <a href="dreams.html">💤 Dream Log</a>
+      </nav>
+      <button type="button" id="logout-btn" class="logout-btn" onclick="logout()">Logout</button>
+    </main>
+    
+    <footer class="app-footer">
+      <div class="footer-content">
+        <p>Made with 💖 for dreamy conversations</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  
+  <!-- App Scripts -->
 </body>
-</html> 
+</html>
