@@ -2,7 +2,7 @@
 
 **Meet PoppyNest**, a cozy mental health and bedtime app designed to help you relax/unwind before bed.
 ---
-## 🔗 Website Link: https://incandescent-tulumba-87dcf5.netlify.app/
+## 🔗 Website Link: [\https://incandescent-tulumba-87dcf5.netlify.app/](https://incandescent-tulumba-87dcf5.netlify.app/)
 ---
 
 ## ⚙️ Tech Stack
