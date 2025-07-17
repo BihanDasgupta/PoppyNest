@@ -7,6 +7,17 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Nightlamp -->
+  <div class="nightlamp" id="nightlamp">
+    <div class="nightlamp-base"></div>
+    <div class="nightlamp-stand"></div>
+    <div class="nightlamp-shade"></div>
+    <div class="nightlamp-bulb"></div>
+  </div>
+  
+  <!-- Light overlay -->
+  <div class="light-overlay" id="lightOverlay"></div>
+  
   <!-- Floating flower elements for dark mode -->
   <div class="floating-emoji-1">🌸</div>
   <div class="floating-emoji-2">🌸</div>
@@ -312,10 +323,53 @@
       }
     }
 
+    // Initialize nightlamp
+    function initNightlamp() {
+      const nightlamp = document.getElementById('nightlamp');
+      const lightOverlay = document.getElementById('lightOverlay');
+      let isLampOn = false;
+
+      // Load saved state
+      const savedLampState = localStorage.getItem('nightlampOn');
+      if (savedLampState === 'true') {
+        isLampOn = true;
+        nightlamp.classList.add('on');
+        lightOverlay.classList.add('active');
+      }
+
+      nightlamp.addEventListener('click', () => {
+        isLampOn = !isLampOn;
+        
+        if (isLampOn) {
+          nightlamp.classList.add('on');
+          lightOverlay.classList.add('active');
+          localStorage.setItem('nightlampOn', 'true');
+        } else {
+          nightlamp.classList.remove('on');
+          lightOverlay.classList.remove('active');
+          localStorage.setItem('nightlampOn', 'false');
+        }
+      });
+
+      // Add hover effect with subtle glow
+      nightlamp.addEventListener('mouseenter', () => {
+        if (!isLampOn) {
+          nightlamp.style.filter = 'brightness(1.1)';
+        }
+      });
+
+      nightlamp.addEventListener('mouseleave', () => {
+        if (!isLampOn) {
+          nightlamp.style.filter = 'brightness(1)';
+        }
+      });
+    }
+
     window.onload = () => {
       loadJournalPages();
       renderJournalPages();
       initInteractiveTitle();
+      initNightlamp();
       
       // Check if we should be in goodnight mode
       const savedMode = localStorage.getItem("goodnightMode");

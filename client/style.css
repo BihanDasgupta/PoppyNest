@@ -5,6 +5,253 @@ body {
     color: #5a4e4e;
     transition: all 0.5s ease;
     min-height: 100vh;
+    position: relative;
+}
+
+/* Fairy-tale Nightlamp styles */
+.nightlamp {
+    position: fixed;
+    top: 20px;
+    right: 30px;
+    width: 70px;
+    height: 100px;
+    z-index: 1000;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.nightlamp-base {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 25px;
+    background: linear-gradient(135deg, #8b4513 0%, #d2691e 30%, #ff8c00 50%, #d2691e 70%, #8b4513 100%);
+    border-radius: 25px 25px 0 0;
+    box-shadow: 0 4px 12px rgba(139, 69, 19, 0.4);
+    border: 2px solid #654321;
+}
+
+.nightlamp-stand {
+    position: absolute;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 50px;
+    background: linear-gradient(135deg, #8b4513 0%, #d2691e 30%, #ff8c00 50%, #d2691e 70%, #8b4513 100%);
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(139, 69, 19, 0.3);
+    border: 1px solid #654321;
+}
+
+.nightlamp-shade {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 55px;
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 25%, #fff3cd 50%, #ffed4e 75%, #ffd700 100%);
+    border-radius: 30px 30px 0 0;
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
+    transition: all 0.3s ease;
+    border: 2px solid #daa520;
+    position: relative;
+}
+
+.nightlamp-shade::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 8px;
+    background: linear-gradient(90deg, transparent 0%, #daa520 20%, #ffd700 50%, #daa520 80%, transparent 100%);
+    border-radius: 4px;
+    opacity: 0.7;
+}
+
+.nightlamp-shade::after {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 6px;
+    background: linear-gradient(90deg, transparent 0%, #daa520 30%, #ffd700 50%, #daa520 70%, transparent 100%);
+    border-radius: 3px;
+    opacity: 0.5;
+}
+
+.nightlamp-bulb {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 25px;
+    height: 25px;
+    background: radial-gradient(circle, #fff 0%, #fff3cd 30%, #ffeb3b 60%, #ffd700 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(255, 235, 59, 0.6);
+    transition: all 0.3s ease;
+    border: 1px solid #ffd700;
+}
+
+.nightlamp.on .nightlamp-shade {
+    background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 25%, #fff8dc 50%, #ffeaa7 75%, #fff3cd 100%);
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.8), 0 0 60px rgba(255, 235, 59, 0.4);
+    border-color: #ffd700;
+}
+
+.nightlamp.on .nightlamp-bulb {
+    background: radial-gradient(circle, #fff 0%, #fff8dc 30%, #fff3cd 60%, #ffeb3b 100%);
+    box-shadow: 0 0 30px rgba(255, 235, 59, 0.9), 0 0 50px rgba(255, 215, 0, 0.6);
+    border-color: #ffeb3b;
+}
+
+.nightlamp:hover {
+    transform: scale(1.08);
+}
+
+.nightlamp:active {
+    transform: scale(0.92);
+}
+
+/* Fairy-tale Light overlay */
+.light-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(ellipse 1400px 1000px at top right, 
+            rgba(255, 248, 220, 0.5) 0%, 
+            rgba(255, 248, 220, 0.4) 10%, 
+            rgba(255, 248, 220, 0.3) 20%, 
+            rgba(255, 248, 220, 0.2) 35%, 
+            rgba(255, 248, 220, 0.15) 50%, 
+            rgba(255, 248, 220, 0.1) 65%, 
+            rgba(255, 248, 220, 0.05) 80%, 
+            transparent 95%),
+        conic-gradient(from 45deg at top right, 
+            rgba(255, 248, 220, 0.4) 0deg, 
+            rgba(255, 248, 220, 0.35) 15deg, 
+            rgba(255, 248, 220, 0.3) 30deg, 
+            rgba(255, 248, 220, 0.25) 45deg, 
+            rgba(255, 248, 220, 0.2) 60deg, 
+            rgba(255, 248, 220, 0.15) 75deg, 
+            rgba(255, 248, 220, 0.1) 90deg, 
+            rgba(255, 248, 220, 0.05) 105deg, 
+            transparent 120deg),
+        linear-gradient(135deg, 
+            rgba(255, 248, 220, 0.25) 0%, 
+            rgba(255, 248, 220, 0.2) 15%, 
+            rgba(255, 248, 220, 0.15) 30%, 
+            rgba(255, 248, 220, 0.1) 45%, 
+            rgba(255, 248, 220, 0.05) 60%, 
+            transparent 75%),
+        radial-gradient(circle 300px at top right, 
+            rgba(255, 235, 59, 0.3) 0%, 
+            rgba(255, 235, 59, 0.2) 50%, 
+            rgba(255, 235, 59, 0.1) 100%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    z-index: 999;
+}
+
+.light-overlay.active {
+    opacity: 1;
+}
+
+/* Cyber night mode fairy-tale nightlamp */
+body.cyber-night .nightlamp-base {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 50%, #16213e 70%, #1a1a2e 100%);
+    box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3), 0 0 20px rgba(255, 105, 180, 0.1);
+    border-color: #ff69b4;
+}
+
+body.cyber-night .nightlamp-stand {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 50%, #16213e 70%, #1a1a2e 100%);
+    box-shadow: 0 2px 8px rgba(255, 105, 180, 0.4), 0 0 15px rgba(255, 105, 180, 0.2);
+    border-color: #ff69b4;
+}
+
+body.cyber-night .nightlamp-shade {
+    background: linear-gradient(135deg, #ff69b4 0%, #ff1493 25%, #ff69b4 50%, #ff1493 75%, #ff69b4 100%);
+    box-shadow: 0 0 30px rgba(255, 105, 180, 0.6), 0 0 50px rgba(255, 20, 147, 0.3);
+    border-color: #ff1493;
+}
+
+body.cyber-night .nightlamp-shade::before {
+    background: linear-gradient(90deg, transparent 0%, #ff1493 20%, #ff69b4 50%, #ff1493 80%, transparent 100%);
+    box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+}
+
+body.cyber-night .nightlamp-shade::after {
+    background: linear-gradient(90deg, transparent 0%, #ff1493 30%, #ff69b4 50%, #ff1493 70%, transparent 100%);
+    box-shadow: 0 0 8px rgba(255, 105, 180, 0.4);
+}
+
+body.cyber-night .nightlamp-bulb {
+    background: radial-gradient(circle, #fff 0%, #ffb6c1 30%, #ff69b4 60%, #ff1493 100%);
+    box-shadow: 0 0 25px rgba(255, 105, 180, 0.8), 0 0 40px rgba(255, 20, 147, 0.4);
+    border-color: #ff69b4;
+}
+
+body.cyber-night .nightlamp.on .nightlamp-shade {
+    background: linear-gradient(135deg, #ffb6c1 0%, #ff69b4 25%, #ff1493 50%, #ff69b4 75%, #ffb6c1 100%);
+    box-shadow: 0 0 50px rgba(255, 105, 180, 0.9), 0 0 80px rgba(255, 20, 147, 0.5), 0 0 120px rgba(255, 105, 180, 0.2);
+    border-color: #ff1493;
+}
+
+body.cyber-night .nightlamp.on .nightlamp-bulb {
+    background: radial-gradient(circle, #fff 0%, #ffb6c1 30%, #ff69b4 60%, #ff1493 100%);
+    box-shadow: 0 0 40px rgba(255, 105, 180, 1), 0 0 60px rgba(255, 20, 147, 0.6), 0 0 100px rgba(255, 105, 180, 0.3);
+    border-color: #ff1493;
+}
+
+body.cyber-night .light-overlay {
+    background: 
+        radial-gradient(ellipse 1400px 1000px at top right, 
+            rgba(255, 248, 220, 0.6) 0%, 
+            rgba(255, 248, 220, 0.5) 10%, 
+            rgba(255, 248, 220, 0.4) 20%, 
+            rgba(255, 248, 220, 0.3) 35%, 
+            rgba(255, 248, 220, 0.2) 50%, 
+            rgba(255, 248, 220, 0.15) 65%, 
+            rgba(255, 248, 220, 0.1) 80%, 
+            transparent 95%),
+        conic-gradient(from 45deg at top right, 
+            rgba(255, 248, 220, 0.5) 0deg, 
+            rgba(255, 248, 220, 0.45) 15deg, 
+            rgba(255, 248, 220, 0.4) 30deg, 
+            rgba(255, 248, 220, 0.35) 45deg, 
+            rgba(255, 248, 220, 0.3) 60deg, 
+            rgba(255, 248, 220, 0.25) 75deg, 
+            rgba(255, 248, 220, 0.2) 90deg, 
+            rgba(255, 248, 220, 0.15) 105deg, 
+            transparent 120deg),
+        linear-gradient(135deg, 
+            rgba(255, 248, 220, 0.35) 0%, 
+            rgba(255, 248, 220, 0.3) 15%, 
+            rgba(255, 248, 220, 0.25) 30%, 
+            rgba(255, 248, 220, 0.2) 45%, 
+            rgba(255, 248, 220, 0.15) 60%, 
+            transparent 75%),
+        radial-gradient(circle 400px at top right, 
+            rgba(255, 235, 59, 0.4) 0%, 
+            rgba(255, 235, 59, 0.3) 50%, 
+            rgba(255, 235, 59, 0.2) 100%),
+        radial-gradient(circle 200px at top right, 
+            rgba(255, 105, 180, 0.2) 0%, 
+            rgba(255, 105, 180, 0.1) 50%, 
+            transparent 100%);
 }
 
 /* Cyber Night Mode Styles */

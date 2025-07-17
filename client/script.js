@@ -64,6 +64,56 @@ async function handleAuthStateChange() {
   }
 }
 
+// Initialize nightlamp
+function initNightlamp() {
+  const nightlamp = document.getElementById('nightlamp');
+  const lightOverlay = document.getElementById('lightOverlay');
+  let isLampOn = false;
+
+  // Load saved state
+  const savedLampState = localStorage.getItem('nightlampOn');
+  if (savedLampState === 'true') {
+    isLampOn = true;
+    nightlamp.classList.add('on');
+    lightOverlay.classList.add('active');
+  }
+
+  nightlamp.addEventListener('click', () => {
+    isLampOn = !isLampOn;
+    
+    if (isLampOn) {
+      nightlamp.classList.add('on');
+      lightOverlay.classList.add('active');
+      localStorage.setItem('nightlampOn', 'true');
+      
+      // Add a subtle sound effect (optional)
+      if (window.speechSynthesis) {
+        const utterance = new SpeechSynthesisUtterance('click');
+        utterance.volume = 0.1;
+        utterance.rate = 3;
+        speechSynthesis.speak(utterance);
+      }
+    } else {
+      nightlamp.classList.remove('on');
+      lightOverlay.classList.remove('active');
+      localStorage.setItem('nightlampOn', 'false');
+    }
+  });
+
+  // Add hover effect with subtle glow
+  nightlamp.addEventListener('mouseenter', () => {
+    if (!isLampOn) {
+      nightlamp.style.filter = 'brightness(1.1)';
+    }
+  });
+
+  nightlamp.addEventListener('mouseleave', () => {
+    if (!isLampOn) {
+      nightlamp.style.filter = 'brightness(1)';
+    }
+  });
+}
+
 // Initialize interactive title
 function initInteractiveTitle() {
   const letters = document.querySelectorAll('.interactive-title .letter');
@@ -394,6 +444,7 @@ async function getBotResponse(message) {
 window.onload = async () => {
   initAuthUI();
   initInteractiveTitle();
+  initNightlamp();
   attachGoodnightToggle();
   if (localStorage.getItem("goodnightMode") === null) {
     localStorage.setItem("goodnightMode", "true");
