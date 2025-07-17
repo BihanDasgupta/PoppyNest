@@ -71,7 +71,17 @@
   <div class="floating-star-40">⭐</div>
   <div class="app-container">
     <header>
-      <h1>💤 Dream Log</h1>
+      <h1 class="interactive-title">
+        <span class="emoji">💤</span>
+        <span class="letter" data-letter="D">D</span>
+        <span class="letter" data-letter="r">r</span>
+        <span class="letter" data-letter="e">e</span>
+        <span class="letter" data-letter="a">a</span>
+        <span class="letter" data-letter="m">m</span>
+        <span class="letter" data-letter="L">L</span>
+        <span class="letter" data-letter="o">o</span>
+        <span class="letter" data-letter="g">g</span>
+      </h1>
       <p>If you don't write your dreams down you'll forget them 😔</p>
     </header>
 
@@ -256,9 +266,55 @@
       }
     }
 
+    // Initialize interactive title
+    function initInteractiveTitle() {
+      const letters = document.querySelectorAll('.interactive-title .letter');
+      
+      letters.forEach(letter => {
+        letter.addEventListener('mouseenter', (e) => {
+          // Add floating particles effect
+          createFloatingParticles(e.target);
+        });
+      });
+    }
+
+    // Create floating particles around the letter
+    function createFloatingParticles(letterElement) {
+      const rect = letterElement.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      
+      for (let i = 0; i < 5; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'floating-particle';
+        particle.style.cssText = `
+          position: fixed;
+          left: ${centerX}px;
+          top: ${centerY}px;
+          width: 4px;
+          height: 4px;
+          background: #ff1493;
+          border-radius: 50%;
+          pointer-events: none;
+          z-index: 1000;
+          animation: particleFloat 1s ease-out forwards;
+        `;
+        
+        document.body.appendChild(particle);
+        
+        // Remove particle after animation
+        setTimeout(() => {
+          if (particle.parentNode) {
+            particle.parentNode.removeChild(particle);
+          }
+        }, 1000);
+      }
+    }
+
     window.onload = () => {
       loadDreamPages();
       renderDreamPages();
+      initInteractiveTitle();
       
       // Check if we should be in goodnight mode
       const savedMode = localStorage.getItem("goodnightMode");

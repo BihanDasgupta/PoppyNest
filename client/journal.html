@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Journal - PoppyNest</title>
-  <link rel="stylesheet" href="style.css?v=1.2" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <!-- Floating flower elements for dark mode -->
@@ -71,7 +71,16 @@
   <div class="floating-star-40">⭐</div>
   <div class="app-container">
     <header>
-      <h1>📝 Journal</h1>
+      <h1 class="interactive-title">
+        <span class="emoji">📝</span>
+        <span class="letter" data-letter="J">J</span>
+        <span class="letter" data-letter="o">o</span>
+        <span class="letter" data-letter="u">u</span>
+        <span class="letter" data-letter="r">r</span>
+        <span class="letter" data-letter="n">n</span>
+        <span class="letter" data-letter="a">a</span>
+        <span class="letter" data-letter="l">l</span>
+      </h1>
       <p>What's on your mind? Write it out ☺️</p>
     </header>
 
@@ -256,9 +265,57 @@
       }
     }
 
+    // Initialize interactive title
+    function initInteractiveTitle() {
+      const letters = document.querySelectorAll('.interactive-title .letter');
+      console.log('Initializing interactive title with', letters.length, 'letters');
+      
+      letters.forEach(letter => {
+        letter.addEventListener('mouseenter', (e) => {
+          console.log('Letter hovered:', e.target.textContent);
+          // Add floating particles effect
+          createFloatingParticles(e.target);
+        });
+      });
+    }
+
+    // Create floating particles around the letter
+    function createFloatingParticles(letterElement) {
+      const rect = letterElement.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      
+      for (let i = 0; i < 5; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'floating-particle';
+        particle.style.cssText = `
+          position: fixed;
+          left: ${centerX}px;
+          top: ${centerY}px;
+          width: 4px;
+          height: 4px;
+          background: #ff1493;
+          border-radius: 50%;
+          pointer-events: none;
+          z-index: 1000;
+          animation: particleFloat 1s ease-out forwards;
+        `;
+        
+        document.body.appendChild(particle);
+        
+        // Remove particle after animation
+        setTimeout(() => {
+          if (particle.parentNode) {
+            particle.parentNode.removeChild(particle);
+          }
+        }, 1000);
+      }
+    }
+
     window.onload = () => {
       loadJournalPages();
       renderJournalPages();
+      initInteractiveTitle();
       
       // Check if we should be in goodnight mode
       const savedMode = localStorage.getItem("goodnightMode");
