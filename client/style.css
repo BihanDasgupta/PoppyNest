@@ -42,10 +42,10 @@ body.cyber-night::before {
 }
 
 body.cyber-night .app-container {
-    background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
-    box-shadow: 0 0 32px rgba(255, 182, 193, 0.18), 0 2px 12px rgba(255, 105, 180, 0.08);
-    border: 1px solid rgba(255, 182, 193, 0.18);
-    backdrop-filter: blur(10px);
+    background: transparent;
+    box-shadow: none;
+    border: none;
+    backdrop-filter: none;
 }
 
 header {
@@ -54,31 +54,129 @@ header {
 }
 
 header h1 {
-    font-size: 3rem;
+    font-size: 5rem;
     color: #d979a2;
     margin-bottom: 0.5rem;
     transition: all 0.5s ease;
 }
 
 body.cyber-night header h1 {
-    color: #ff69b4;
-    text-shadow: 0 0 10px rgba(255, 105, 180, 0.5), 0 0 20px rgba(255, 105, 180, 0.3);
-    animation: neonGlow 2s ease-in-out infinite alternate;
+    color: #ff1493;
+    text-shadow: 
+        0 0 10px rgba(255, 20, 147, 0.7),
+        0 0 20px rgba(255, 20, 147, 0.6),
+        0 0 30px rgba(255, 20, 147, 0.5),
+        0 0 40px rgba(255, 20, 147, 0.4),
+        0 0 50px rgba(255, 20, 147, 0.3),
+        0 0 60px rgba(255, 20, 147, 0.2),
+        0 0 70px rgba(255, 20, 147, 0.1);
+    animation: neonGlow 1.5s ease-in-out infinite alternate;
+}
+
+/* Interactive title styling */
+.interactive-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+}
+
+.interactive-title .letter {
+    display: inline-block;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.interactive-title .letter:hover {
+    transform: translateY(-15px) scale(1.2);
+    text-shadow: 
+        0 0 15px rgba(255, 20, 147, 1.0),
+        0 0 25px rgba(255, 20, 147, 1.0),
+        0 0 35px rgba(255, 20, 147, 0.8),
+        0 0 45px rgba(255, 20, 147, 0.6),
+        0 0 55px rgba(255, 20, 147, 0.4),
+        0 0 65px rgba(255, 20, 147, 0.2);
+    z-index: 10;
+}
+
+.interactive-title .emoji {
+    display: inline-block;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.interactive-title .emoji:hover {
+    transform: translateY(-10px) scale(1.1);
+    filter: brightness(1.3);
+}
+
+@keyframes particleFloat {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50px, -50px) scale(0);
+        opacity: 0;
+    }
 }
 
 @keyframes neonGlow {
-    from { text-shadow: 0 0 10px rgba(255, 105, 180, 0.5), 0 0 20px rgba(255, 105, 180, 0.3), 0 0 30px rgba(255, 105, 180, 0.1); }
-    to { text-shadow: 0 0 15px rgba(255, 105, 180, 0.7), 0 0 25px rgba(255, 105, 180, 0.5), 0 0 35px rgba(255, 105, 180, 0.3); }
+    from { 
+        text-shadow: 
+            0 0 10px rgba(255, 20, 147, 0.7),
+            0 0 20px rgba(255, 20, 147, 0.6),
+            0 0 30px rgba(255, 20, 147, 0.5),
+            0 0 40px rgba(255, 20, 147, 0.4),
+            0 0 50px rgba(255, 20, 147, 0.3),
+            0 0 60px rgba(255, 20, 147, 0.2),
+            0 0 70px rgba(255, 20, 147, 0.1);
+    }
+    to { 
+        text-shadow: 
+            0 0 15px rgba(255, 20, 147, 0.8),
+            0 0 25px rgba(255, 20, 147, 0.7),
+            0 0 35px rgba(255, 20, 147, 0.6),
+            0 0 45px rgba(255, 20, 147, 0.5),
+            0 0 55px rgba(255, 20, 147, 0.4),
+            0 0 65px rgba(255, 20, 147, 0.3),
+            0 0 75px rgba(255, 20, 147, 0.2),
+            0 0 85px rgba(255, 20, 147, 0.1);
+    }
+}
+
+@keyframes subtitleGlow {
+    from { 
+        text-shadow: 
+            0 0 8px rgba(255, 182, 193, 0.6),
+            0 0 15px rgba(255, 182, 193, 0.4),
+            0 0 25px rgba(255, 182, 193, 0.2);
+    }
+    to { 
+        text-shadow: 
+            0 0 12px rgba(255, 182, 193, 0.8),
+            0 0 20px rgba(255, 182, 193, 0.6),
+            0 0 30px rgba(255, 182, 193, 0.4),
+            0 0 40px rgba(255, 182, 193, 0.2);
+    }
 }
 
 header p {
     font-size: 1.2rem;
     color: #8b7d7d;
     margin-bottom: 0.5rem;
+    transition: all 0.5s ease;
 }
 
 body.cyber-night header p {
     color: #ffb6c1;
+    text-shadow: 
+        0 0 8px rgba(255, 182, 193, 0.6),
+        0 0 15px rgba(255, 182, 193, 0.4),
+        0 0 25px rgba(255, 182, 193, 0.2);
+    animation: subtitleGlow 3s ease-in-out infinite alternate;
 }
 
 nav.nav-buttons {
@@ -1691,7 +1789,7 @@ body.cyber-night .typing-dot {
 
 .auth-box {
   margin: 0 auto;
-  max-width: 400px;
+  max-width: 300px;
   width: 100%;
   background: #fff8fc;
   padding: 2rem;
@@ -1735,18 +1833,8 @@ body.cyber-night .auth-box > p {
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-}
-
-.auth-form h3 {
-  text-align: center;
-  color: #d979a2;
-  margin-bottom: 1rem;
-  font-size: 1.3rem;
-}
-
-body.cyber-night .auth-form h3 {
-  color: #ff69b4;
+  gap: 2rem;
+  width: 100%;
 }
 
 .auth-form input {
@@ -1756,7 +1844,23 @@ body.cyber-night .auth-form h3 {
   font-size: 1rem;
   background: #fff;
   transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 0.5rem;
 }
+
+.auth-form h3 {
+  text-align: left;
+  color: #d979a2;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+body.cyber-night .auth-form h3 {
+  color: #ff69b4;
+}
+
+
 
 body.cyber-night .auth-form input {
   background: #2a1a2e;
@@ -1894,7 +1998,7 @@ body.cyber-night .logout-btn:hover {
   
 /* Footer styling */
 .app-footer {
-  margin-top: 2rem;
+  margin-top: 8rem;
   padding: 1.5rem 0;
   text-align: center;
   border-top: 1px solid #fdd2e0;

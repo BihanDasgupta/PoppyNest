@@ -64,6 +64,63 @@ async function handleAuthStateChange() {
   }
 }
 
+// Initialize interactive title
+function initInteractiveTitle() {
+  const letters = document.querySelectorAll('.interactive-title .letter');
+  
+  letters.forEach(letter => {
+    letter.addEventListener('mouseenter', (e) => {
+      // Add floating particles effect
+      createFloatingParticles(e.target);
+      
+      // Add sound effect (optional - browser compatibility)
+      if (window.speechSynthesis) {
+        const utterance = new SpeechSynthesisUtterance(letter.textContent);
+        utterance.volume = 0.1;
+        utterance.rate = 2;
+        speechSynthesis.speak(utterance);
+      }
+    });
+    
+    letter.addEventListener('mouseleave', () => {
+      // Remove any lingering effects
+    });
+  });
+}
+
+// Create floating particles around the letter
+function createFloatingParticles(letterElement) {
+  const rect = letterElement.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+  
+  for (let i = 0; i < 5; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'floating-particle';
+    particle.style.cssText = `
+      position: fixed;
+      left: ${centerX}px;
+      top: ${centerY}px;
+      width: 4px;
+      height: 4px;
+      background: #ff1493;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 1000;
+      animation: particleFloat 1s ease-out forwards;
+    `;
+    
+    document.body.appendChild(particle);
+    
+    // Remove particle after animation
+    setTimeout(() => {
+      if (particle.parentNode) {
+        particle.parentNode.removeChild(particle);
+      }
+    }, 1000);
+  }
+}
+
 // Initialize authentication UI
 function initAuthUI() {
   // Show/hide register form
@@ -336,6 +393,7 @@ async function getBotResponse(message) {
 
 window.onload = async () => {
   initAuthUI();
+  initInteractiveTitle();
   attachGoodnightToggle();
   if (localStorage.getItem("goodnightMode") === null) {
     localStorage.setItem("goodnightMode", "true");
