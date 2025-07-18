@@ -4,6 +4,7 @@ import AuthService from './auth-service.js';
 
 let goodnightMode = false;
 let authService = new AuthService();
+let currentTheme = 'pink'; // Default theme
 
 const chatForm = document.getElementById("chat-form");
 const userInput = document.getElementById("user-input");
@@ -17,8 +18,84 @@ const showRegisterLink = document.getElementById("show-register");
 const showLoginLink = document.getElementById("show-login");
 const authError = document.getElementById("auth-error");
 
+// Theme elements
+const themeButtons = document.getElementById("theme-buttons");
+
 // Make appendMessage globally accessible for goodnight greeting
 window.appendMessage = appendMessage;
+
+// Theme Management Functions
+function initThemeSystem() {
+  // Add event listeners to theme buttons
+  const themeBtns = document.querySelectorAll('.theme-btn');
+  themeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const theme = btn.getAttribute('data-theme');
+      setTheme(theme);
+    });
+  });
+}
+
+function setTheme(theme) {
+  currentTheme = theme;
+  
+  // Remove all existing theme classes
+  document.documentElement.removeAttribute('data-theme');
+  
+  // Add new theme class
+  document.documentElement.setAttribute('data-theme', theme);
+  
+  // Save theme for current user
+  if (authService.isAuthenticated()) {
+    const user = authService.getCurrentUser();
+    if (user) {
+      authService.saveUserTheme(user.uid, theme);
+    }
+  }
+  
+  // Add visual feedback
+  const clickedBtn = document.querySelector(`[data-theme="${theme}"]`);
+  if (clickedBtn) {
+    clickedBtn.style.transform = 'scale(1.3)';
+    setTimeout(() => {
+      clickedBtn.style.transform = 'scale(1)';
+    }, 200);
+  }
+}
+
+async function loadUserTheme() {
+  if (authService.isAuthenticated()) {
+    const user = authService.getCurrentUser();
+    if (user) {
+      const savedTheme = await authService.getUserTheme(user.uid);
+      if (savedTheme && savedTheme !== 'pink') {
+        setTheme(savedTheme);
+      } else {
+        // Default to pink theme
+        setTheme('pink');
+      }
+    }
+  } else {
+    // Not logged in, use default pink theme
+    setTheme('pink');
+  }
+}
+
+function showThemeButtons() {
+  if (themeButtons) {
+    themeButtons.style.display = 'block';
+  }
+}
+
+function hideThemeButtons() {
+  if (themeButtons) {
+    themeButtons.style.display = 'none';
+  }
+}
+
+// Make theme functions global so they can be called from auth-service.js
+window.showThemeButtons = showThemeButtons;
+window.hideThemeButtons = hideThemeButtons;
 
 // Attach Goodnight Mode toggle event
 function attachGoodnightToggle() {
@@ -56,11 +133,15 @@ async function handleAuthStateChange() {
     await renderChatHistory();
     document.getElementById('chat-container').style.display = 'block';
     document.getElementById('login-container').style.display = 'none';
+    showThemeButtons(); // Show theme buttons when logged in
+    await loadUserTheme(); // Load user's saved theme
     scrollToBottom(); // Call after display change
   } else {
     await renderChatHistory();
     document.getElementById('chat-container').style.display = 'none';
     document.getElementById('login-container').style.display = 'flex';
+    hideThemeButtons(); // Hide theme buttons when logged out
+    setTheme('pink'); // Reset to default pink theme
   }
 }
 
@@ -446,6 +527,8 @@ window.onload = async () => {
   initInteractiveTitle();
   initNightlamp();
   attachGoodnightToggle();
+  initThemeSystem(); // Initialize theme system
+  
   if (localStorage.getItem("goodnightMode") === null) {
     localStorage.setItem("goodnightMode", "true");
   }
@@ -461,6 +544,7 @@ window.onload = async () => {
     const btn = document.getElementById("goodnight-toggle");
     if (btn) btn.textContent = "🌙 Goodnight Mode";
   }
-  await handleAuthStateChange();
+  
+  await handleAuthStateChange(); // This will handle theme loading and button visibility
   localStorage.setItem("previousMode", savedMode);
 };

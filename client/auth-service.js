@@ -151,6 +151,35 @@ class AuthService {
     return JSON.parse(localStorage.getItem(`chatHistory_${this.currentUser?.uid}`)) || [];
   }
 
+  // Theme Management Methods
+  async saveUserTheme(userId, theme) {
+    try {
+      await db.collection('users').doc(userId).update({
+        theme: theme,
+        lastSeen: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    } catch (error) {
+      console.error('Error saving theme:', error);
+      // Fallback to localStorage
+      localStorage.setItem(`theme_${userId}`, theme);
+    }
+  }
+
+  async getUserTheme(userId) {
+    try {
+      const userDoc = await db.collection('users').doc(userId).get();
+      if (userDoc.exists) {
+        const userData = userDoc.data();
+        return userData.theme || 'pink';
+      }
+      return 'pink';
+    } catch (error) {
+      console.error('Error loading theme:', error);
+      // Fallback to localStorage
+      return localStorage.getItem(`theme_${userId}`) || 'pink';
+    }
+  }
+
   // UI Methods
   showAuthenticatedUI() {
     const loginContainer = document.getElementById('login-container');
@@ -162,6 +191,7 @@ class AuthService {
       userInfo.textContent = `Welcome, ${this.getCurrentUsername()}`;
       userInfo.style.display = 'block';
     }
+    if (typeof showThemeButtons === 'function') showThemeButtons();
   }
 
   showLoginUI() {
@@ -171,6 +201,7 @@ class AuthService {
     if (loginContainer) loginContainer.style.display = 'flex';
     if (chatContainer) chatContainer.style.display = 'none';
     if (userInfo) userInfo.style.display = 'none';
+    if (typeof hideThemeButtons === 'function') hideThemeButtons();
   }
 }
 

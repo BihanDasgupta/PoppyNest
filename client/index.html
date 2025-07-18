@@ -7,16 +7,17 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body class="cyber-night">
-  <!-- Nightlamp -->
-  <div class="nightlamp" id="nightlamp">
-    <div class="nightlamp-base"></div>
-    <div class="nightlamp-stand"></div>
-    <div class="nightlamp-shade"></div>
-    <div class="nightlamp-bulb"></div>
+  <!-- Theme Color Buttons (only visible when logged in) -->
+  <div id="theme-buttons" class="theme-buttons" style="display: none;">
+    <button class="theme-btn theme-pink" data-theme="pink" title="Pink Theme">🌸</button>
+    <button class="theme-btn theme-orange" data-theme="orange" title="Orange Theme">🍊</button>
+    <button class="theme-btn theme-purple" data-theme="purple" title="Purple Theme">💜</button>
+    <button class="theme-btn theme-blue" data-theme="blue" title="Blue Theme">💙</button>
+    <button class="theme-btn theme-green" data-theme="green" title="Green Theme">💚</button>
+    <button class="theme-btn theme-red" data-theme="red" title="Red Theme">❤️</button>
+    <button class="theme-btn theme-yellow" data-theme="yellow" title="Yellow Theme">💛</button>
+    <button class="theme-btn theme-teal" data-theme="teal" title="Teal Theme">🐬</button>
   </div>
-  
-  <!-- Light overlay -->
-  <div class="light-overlay" id="lightOverlay"></div>
   
   <!-- Floating flower elements for dark mode -->
   <div class="floating-emoji-1">🌸</div>
@@ -133,6 +134,17 @@
 
     <!-- Chat Container -->
     <main id="chat-container" class="chat-container" style="display: none;">
+      <!-- Nightlamp (only visible when logged in) -->
+      <div class="nightlamp" id="nightlamp">
+        <div class="nightlamp-base"></div>
+        <div class="nightlamp-stand"></div>
+        <div class="nightlamp-shade"></div>
+        <div class="nightlamp-bulb"></div>
+      </div>
+      
+      <!-- Light overlay (only visible when logged in) -->
+      <div class="light-overlay" id="lightOverlay"></div>
+      
       <div id="chat-box" class="chat-box"></div>
       <button id="scroll-bottom-btn" class="scroll-bottom-btn" style="display: none;">▼ New Messages</button>
       <form id="chat-form">
